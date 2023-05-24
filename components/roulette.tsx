@@ -3,20 +3,29 @@ import React, { FC } from "react";
 type RouletteProps = {
   items: string[];
   speed: number;
+  size: number;
+  colors: string[];
+  textSize: string;
+  textOffset: number;
 };
 
-const Roulette: FC<RouletteProps> = ({ items, speed }) => {
-  const colors = ["blue", "red"];
-
-  const radius = 100;
-  const circumference = 2 * Math.PI * radius;
+const Roulette: FC<RouletteProps> = ({
+  items,
+  speed,
+  size,
+  colors,
+  textSize,
+  textOffset,
+}) => {
+  const radius = size / 2;
+  const textRadius = radius - textOffset;
 
   return (
-    <div className="relative w-64 h-64">
+    <div className="relative" style={{ width: size, height: size }}>
       <svg
         className="w-full h-full animate-spin"
         style={{ animationDuration: `${speed}s` }}
-        viewBox="0 0 200 200"
+        viewBox={`0 0 ${size} ${size}`}
       >
         {items.map((item, index) => {
           const sliceAngle = (2 * Math.PI) / items.length;
@@ -42,20 +51,17 @@ const Roulette: FC<RouletteProps> = ({ items, speed }) => {
                 fill={colors[index % colors.length]}
               />
               <text
-                x={
-                  radius + (radius / 2) * Math.cos(startAngle + sliceAngle / 2)
-                }
-                y={
-                  radius + (radius / 2) * Math.sin(startAngle + sliceAngle / 2)
-                }
+                x={radius + textRadius * Math.cos(startAngle + sliceAngle / 2)}
+                y={radius + textRadius * Math.sin(startAngle + sliceAngle / 2)}
                 textAnchor="middle"
                 dominantBaseline="central"
                 transform={`rotate(${textRotation}, ${
-                  radius + (radius / 2) * Math.cos(startAngle + sliceAngle / 2)
+                  radius + textRadius * Math.cos(startAngle + sliceAngle / 2)
                 }, ${
-                  radius + (radius / 2) * Math.sin(startAngle + sliceAngle / 2)
+                  radius + textRadius * Math.sin(startAngle + sliceAngle / 2)
                 })`}
                 fill="white"
+                className={textSize}
               >
                 {item}
               </text>

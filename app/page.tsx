@@ -15,14 +15,18 @@ const Home = () => {
           "product 7",
           "product 8",
           "product 9",
-          "product 10",
-          "product 11",
-          "product 12",
-          "product 13",
-          "product 14",
-          "product 15",
+          "product 10 product 10",
+          "product 11 product 11",
+          "product 12 product 12",
+          "product 13 product 13",
+          "product 14 product 14",
+          "product 15 product 15 product 15",
         ]}
         speed={10}
+        size={500}
+        colors={["red", "blue", "green", "yellow"]}
+        textSize={"text-lg"}
+        textOffset={0}
       />
     </div>
   );
