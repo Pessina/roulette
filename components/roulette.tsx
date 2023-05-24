@@ -2,13 +2,13 @@ import React, { FC } from "react";
 
 type RouletteProps = {
   items: string[];
-  speed: number; // in seconds
+  speed: number;
 };
 
 const Roulette: FC<RouletteProps> = ({ items, speed }) => {
   const colors = ["blue", "red"];
 
-  const radius = 100; // Radius of the circle
+  const radius = 100;
   const circumference = 2 * Math.PI * radius;
 
   return (
@@ -23,11 +23,8 @@ const Roulette: FC<RouletteProps> = ({ items, speed }) => {
           const startAngle = index * sliceAngle;
           const endAngle = startAngle + sliceAngle;
 
-          // We need to convert from angles to a percentage of the total circumference
-          const startPercentage = startAngle / (2 * Math.PI);
-          const endPercentage = endAngle / (2 * Math.PI);
-
           const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
+          const textRotation = (index + 0.5) * (360 / items.length);
 
           return (
             <g key={index}>
@@ -53,6 +50,11 @@ const Roulette: FC<RouletteProps> = ({ items, speed }) => {
                 }
                 textAnchor="middle"
                 dominantBaseline="central"
+                transform={`rotate(${textRotation}, ${
+                  radius + (radius / 2) * Math.cos(startAngle + sliceAngle / 2)
+                }, ${
+                  radius + (radius / 2) * Math.sin(startAngle + sliceAngle / 2)
+                })`}
                 fill="white"
               >
                 {item}
