@@ -20,17 +20,15 @@ const Roulette: FC<RouletteProps> = ({ items, speed }) => {
           className="absolute w-64 h-64 rounded-full flex items-center justify-center"
           style={{
             transform: `rotate(${sliceAngle * index}deg)`,
-            clipPath: "polygon(50% 0%, 100% 0, 100% 100%, 50% 100%)",
+            clipPath: "polygon(50% 50%, 100% 50%, 100% 100%, 0 100%)",
             backgroundColor: colors[index % colors.length],
           }}
         >
           <div
-            className="absolute transform text-white text-center"
+            className="absolute w-32 transform text-white text-center"
             style={{
               transform: `rotate(-${sliceAngle * index}deg)`,
-              width: "100%",
-              textAlign: "center",
-              left: 0,
+              left: "50%",
             }}
           >
             {item}
