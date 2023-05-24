@@ -1,38 +1,42 @@
-import React from "react";
+import React, { FC } from "react";
 
-interface RouletteProps {
+type RouletteProps = {
   items: string[];
-  speed: number; // time in seconds for full rotation
-}
+  speed: number; // in seconds
+};
 
-const Roulette: React.FC<RouletteProps> = ({ items, speed }) => {
-  const itemAngle = 360 / items.length;
+const Roulette: FC<RouletteProps> = ({ items, speed }) => {
+  const sliceAngle = 360 / items.length;
+  const colors = ["blue", "red"];
 
   return (
     <div
-      className="relative w-[200px] h-[200px] rounded-full bg-transparent flex items-center justify-center animate-spin"
-      style={{
-        animationDuration: `${speed}s`,
-      }}
+      className="w-64 h-64 relative animate-spin"
+      style={{ animationDuration: `${speed}s` }}
     >
-      {items.map((item, index) => {
-        const angle = itemAngle * index;
-        const hue = (index / items.length) * 360;
-        return (
+      {items.map((item, index) => (
+        <div
+          key={index}
+          className="absolute w-64 h-64 rounded-full flex items-center justify-center"
+          style={{
+            transform: `rotate(${sliceAngle * index}deg)`,
+            clipPath: "polygon(50% 0%, 100% 0, 100% 100%, 50% 100%)",
+            backgroundColor: colors[index % colors.length],
+          }}
+        >
           <div
-            key={index}
-            className="absolute w-[200px] h-[200px] rounded-full bg-transparent flex items-center justify-center text-center transform origin-center"
+            className="absolute transform text-white text-center"
             style={{
-              clipPath: `polygon(50% 50%, 100% 50%, 100% 100%, 0% 100%)`,
-              backgroundColor: `hsl(${hue}, 100%, 50%)`,
-              color: "white",
-              transform: `rotate(${angle}deg)`,
+              transform: `rotate(-${sliceAngle * index}deg)`,
+              width: "100%",
+              textAlign: "center",
+              left: 0,
             }}
           >
             {item}
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };
