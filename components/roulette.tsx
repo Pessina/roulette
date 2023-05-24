@@ -6,35 +6,61 @@ type RouletteProps = {
 };
 
 const Roulette: FC<RouletteProps> = ({ items, speed }) => {
-  const sliceAngle = 360 / items.length;
   const colors = ["blue", "red"];
 
+  const radius = 100; // Radius of the circle
+  const circumference = 2 * Math.PI * radius;
+
   return (
-    <div
-      className="w-64 h-64 relative animate-spin"
-      style={{ animationDuration: `${speed}s` }}
-    >
-      {items.map((item, index) => (
-        <div
-          key={index}
-          className="absolute w-64 h-64 rounded-full flex items-center justify-center"
-          style={{
-            transform: `rotate(${sliceAngle * index}deg)`,
-            clipPath: "polygon(50% 50%, 100% 50%, 100% 100%, 0 100%)",
-            backgroundColor: colors[index % colors.length],
-          }}
-        >
-          <div
-            className="absolute w-32 transform text-white text-center"
-            style={{
-              transform: `rotate(-${sliceAngle * index}deg)`,
-              left: "50%",
-            }}
-          >
-            {item}
-          </div>
-        </div>
-      ))}
+    <div className="relative w-64 h-64">
+      <svg
+        className="w-full h-full animate-spin"
+        style={{ animationDuration: `${speed}s` }}
+        viewBox="0 0 200 200"
+      >
+        {items.map((item, index) => {
+          const sliceAngle = (2 * Math.PI) / items.length;
+          const startAngle = index * sliceAngle;
+          const endAngle = startAngle + sliceAngle;
+
+          // We need to convert from angles to a percentage of the total circumference
+          const startPercentage = startAngle / (2 * Math.PI);
+          const endPercentage = endAngle / (2 * Math.PI);
+
+          const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
+
+          return (
+            <g key={index}>
+              <path
+                d={`
+                  M ${radius} ${radius}
+                  L ${radius + radius * Math.cos(startAngle)} ${
+                  radius + radius * Math.sin(startAngle)
+                }
+                  A ${radius} ${radius} 0 ${largeArcFlag} 1 ${
+                  radius + radius * Math.cos(endAngle)
+                } ${radius + radius * Math.sin(endAngle)}
+                  Z
+                `}
+                fill={colors[index % colors.length]}
+              />
+              <text
+                x={
+                  radius + (radius / 2) * Math.cos(startAngle + sliceAngle / 2)
+                }
+                y={
+                  radius + (radius / 2) * Math.sin(startAngle + sliceAngle / 2)
+                }
+                textAnchor="middle"
+                dominantBaseline="central"
+                fill="white"
+              >
+                {item}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
     </div>
   );
 };

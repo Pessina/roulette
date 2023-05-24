@@ -15,7 +15,7 @@ const Home = () => {
           "test3",
           "test4",
         ]}
-        speed={10}
+        speed={1}
       />
     </div>
   );
