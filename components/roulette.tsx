@@ -7,6 +7,8 @@ type RouletteProps = {
   colors: string[];
   textSize: string;
   textOffset: number;
+  pizzaBorderColor: string;
+  sliceBorderColor: string;
 };
 
 const Roulette: FC<RouletteProps> = ({
@@ -16,6 +18,8 @@ const Roulette: FC<RouletteProps> = ({
   colors,
   textSize,
   textOffset,
+  pizzaBorderColor,
+  sliceBorderColor,
 }) => {
   const radius = size / 2;
   const textRadius = radius - textOffset;
@@ -27,6 +31,13 @@ const Roulette: FC<RouletteProps> = ({
         style={{ animationDuration: `${speed}s` }}
         viewBox={`0 0 ${size} ${size}`}
       >
+        <circle
+          cx={radius}
+          cy={radius}
+          r={radius}
+          fill="none"
+          stroke={pizzaBorderColor}
+        />
         {items.map((item, index) => {
           const sliceAngle = (2 * Math.PI) / items.length;
           const startAngle = index * sliceAngle;
@@ -49,6 +60,7 @@ const Roulette: FC<RouletteProps> = ({
                   Z
                 `}
                 fill={colors[index % colors.length]}
+                stroke={sliceBorderColor}
               />
               <text
                 x={radius + textRadius * Math.cos(startAngle + sliceAngle / 2)}

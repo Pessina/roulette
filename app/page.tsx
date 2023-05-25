@@ -6,7 +6,7 @@ const Home = () => {
     <div className="h-screen w-full flex items-center justify-center">
       <Roulette
         items={[
-          "product 1",
+          "pro",
           "product 2",
           "product 3",
           "product 4",
@@ -20,13 +20,15 @@ const Home = () => {
           "product 12 product 12",
           "product 13 product 13",
           "product 14 product 14",
-          "product 15 product 15 product 15",
+          "product 15 product 15",
         ]}
         speed={10}
         size={500}
         colors={["red", "blue", "green", "yellow"]}
         textSize={"text-lg"}
-        textOffset={0}
+        textOffset={100}
+        pizzaBorderColor={"#0000ff"}
+        sliceBorderColor={"#00ff00"}
       />
     </div>
   );
