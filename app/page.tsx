@@ -1,35 +1,29 @@
 "use client";
-import Roulette from "@/components/roulette";
+import { useState } from "react";
+
+import Roulette from "@/components/general/Roulette";
+import Sidebar from "@/components/home/Sidebar";
 
 const Home = () => {
+  const [mustStartSpinning, setMustStartSpinning] = useState(false);
+  const [spinOptions, setSpinOptions] = useState<string[]>([]);
+
   return (
-    <div className="h-screen w-full flex items-center justify-center">
-      <Roulette
-        items={[
-          "pro",
-          "product 2",
-          "product 3",
-          "product 4",
-          "product 5",
-          "product 6",
-          "product 7",
-          "product 8",
-          "product 9",
-          "product 10 product 10",
-          "product 11 product 11",
-          "product 12 product 12",
-          "product 13 product 13",
-          "product 14 product 14",
-          "product 15 product 15",
-        ]}
-        speed={10}
-        size={500}
-        colors={["red", "blue", "green", "yellow"]}
-        textSize={"text-lg"}
-        textOffset={100}
-        pizzaBorderColor={"#0000ff"}
-        sliceBorderColor={"#00ff00"}
+    <div className="h-full w-full flex bg-white">
+      <Sidebar
+        className="max-w-[400px] shrink-0 grow h-full"
+        onSpin={(options) => {
+          setMustStartSpinning(true);
+          setSpinOptions(options);
+        }}
       />
+      <div className="grow h-full flex items-center justify-center">
+        <Roulette
+          data={spinOptions}
+          mustStartSpinning={mustStartSpinning}
+          onSpinComplete={() => setMustStartSpinning(false)}
+        />
+      </div>
     </div>
   );
 };
