@@ -6,6 +6,7 @@ type RouletteProps = {
   mustStartSpinning: boolean;
   onSpinComplete: () => void;
   className?: string;
+  prizeNumber: number;
 };
 
 const Wheel = dynamic(
@@ -18,6 +19,7 @@ const Roulette: React.FC<RouletteProps> = ({
   mustStartSpinning,
   onSpinComplete,
   className,
+  prizeNumber,
 }) => {
   const options = data.map((option, index) => ({
     option,
@@ -31,7 +33,7 @@ const Roulette: React.FC<RouletteProps> = ({
     <div className={className}>
       <Wheel
         spinDuration={0.1}
-        prizeNumber={0}
+        prizeNumber={prizeNumber}
         mustStartSpinning={mustStartSpinning}
         onStopSpinning={onSpinComplete}
         data={options}

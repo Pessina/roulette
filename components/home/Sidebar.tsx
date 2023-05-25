@@ -31,9 +31,14 @@ const Sidebar: FC<SidebarProps> = ({ onSpin, className, onChangeOptions }) => {
             )
           }
         />
-        <Button theme="success" onClick={onSpin}>
-          Spin
-        </Button>
+        <div className="flex gap-4">
+          <Button theme="primary" onClick={onSpin} className="grow">
+            Save
+          </Button>
+          <Button theme="success" onClick={onSpin} className="grow">
+            Spin
+          </Button>
+        </div>
       </form>
     </div>
   );
