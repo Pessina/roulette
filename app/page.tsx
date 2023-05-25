@@ -12,13 +12,12 @@ const Home = () => {
     <div className="h-full w-full flex bg-white">
       <Sidebar
         className="max-w-[400px] shrink-0 grow h-full"
-        onSpin={(options) => {
-          setMustStartSpinning(true);
-          setSpinOptions(options);
-        }}
+        onSpin={() => setMustStartSpinning(true)}
+        onChangeOptions={setSpinOptions}
       />
       <div className="grow h-full flex items-center justify-center">
         <Roulette
+          key={spinOptions.join("")}
           data={spinOptions}
           mustStartSpinning={mustStartSpinning}
           onSpinComplete={() => setMustStartSpinning(false)}
