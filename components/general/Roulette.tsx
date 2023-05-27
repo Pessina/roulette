@@ -21,11 +21,17 @@ const Roulette: React.FC<RouletteProps> = ({
   className,
   prizeNumber,
 }) => {
+  const backgroundColors = data.map((_, index) =>
+    index % 2 === 0 ? "#bd124f" : "#063bbf"
+  );
+
+  const textColors = data.map(() => "#c0c0c0");
+
   const options = data.map((option, index) => ({
     option,
     style: {
-      backgroundColor: index % 2 === 0 ? "red" : "blue",
-      textColor: "white",
+      backgroundColor: backgroundColors[index],
+      textColor: textColors[index],
     },
   }));
 
@@ -37,12 +43,20 @@ const Roulette: React.FC<RouletteProps> = ({
         mustStartSpinning={mustStartSpinning}
         onStopSpinning={onSpinComplete}
         data={options}
-        backgroundColors={options.map((d) => d.style.backgroundColor)}
-        textColors={options.map((d) => d.style.textColor)}
+        backgroundColors={backgroundColors}
+        textColors={textColors}
+        outerBorderColor="#040404"
+        outerBorderWidth={5}
+        radiusLineColor="#040404"
+        radiusLineWidth={5}
+        fontSize={20}
+        fontWeight="bold"
+        fontStyle="normal"
+        textDistance={60}
       />
     </div>
   ) : (
-    <p>No options added yet</p>
+    <p className="text-500">No options added yet</p>
   );
 };
 

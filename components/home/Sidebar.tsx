@@ -22,7 +22,7 @@ const Sidebar: FC<SidebarProps> = ({ onSpin, className, onChangeOptions }) => {
 
   return (
     <div
-      className={`${className} p-4 shadow-lg bg-background-900 flex flex-col gap-4`}
+      className={`${className} p-4 shadow-lg bg-background-900 flex flex-col gap-4 overflow-hidden`}
     >
       <Image
         src="/logo.png"
@@ -32,10 +32,10 @@ const Sidebar: FC<SidebarProps> = ({ onSpin, className, onChangeOptions }) => {
         className="shrink-0 self-center"
       />
       <form
-        className="flex flex-col h-full justify-between grow"
+        className="flex flex-col h-full justify-between grow overflow-hidden"
         onSubmit={(e) => e.preventDefault()}
       >
-        <ul className="flex flex-col gap-2 text-text-700 tex-sm grow">
+        <ul className="flex flex-col gap-2 text-text-700 tex-sm grow overflow-scroll py-4">
           {items.map((item, index) => (
             <ListItem
               className="bg-background-500"
@@ -83,7 +83,7 @@ const Sidebar: FC<SidebarProps> = ({ onSpin, className, onChangeOptions }) => {
         <Button
           theme="success"
           onClick={onSpin}
-          className="shrink-0 bg-primary-500 text-text-100"
+          className="shrink-0 bg-primary-500 text-text-100 mt-4"
         >
           Spin
         </Button>
