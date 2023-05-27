@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { FC, useEffect, useState } from "react";
 
 import Button from "../general/Button";
@@ -20,9 +21,18 @@ const Sidebar: FC<SidebarProps> = ({ onSpin, className, onChangeOptions }) => {
   }, [items, onChangeOptions]);
 
   return (
-    <div className={`${className} p-4 shadow-lg bg-background-900`}>
+    <div
+      className={`${className} p-4 shadow-lg bg-background-900 flex flex-col gap-4`}
+    >
+      <Image
+        src="/logo.png"
+        alt="logo"
+        width={400}
+        height={400}
+        className="shrink-0 self-center"
+      />
       <form
-        className="flex flex-col h-full justify-between"
+        className="flex flex-col h-full justify-between grow"
         onSubmit={(e) => e.preventDefault()}
       >
         <ul className="flex flex-col gap-2 text-text-700 tex-sm grow">
