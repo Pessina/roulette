@@ -3,10 +3,13 @@ import "firebase/auth";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
+  browserLocalPersistence,
   sendPasswordResetEmail,
+  setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -39,11 +42,14 @@ const LoginPage = () => {
   });
 
   const [inputsError, setInputsError] = useState("");
+  const router = useRouter();
 
   const onSubmit = async (data: LoginForm) => {
     try {
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, data.email, data.password);
       setInputsError("");
+      router.push("/");
     } catch (error) {
       console.error((error as { message: string }).message);
       setInputsError("Wrong credentials");

@@ -1,14 +1,18 @@
 "use client";
 import "../firebase";
 
+import { signOut } from "firebase/auth";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 
 import { getItems } from "@/api/item";
 import { Item } from "@/api/types";
+import { LogOutIcon } from "@/components/general/icons";
 import Modal from "@/components/general/Modal";
 import Roulette from "@/components/general/Roulette";
 import Sidebar from "@/components/home/Sidebar";
+
+import { auth } from "../firebase";
 
 const Home = () => {
   const [mustStartSpinning, setMustStartSpinning] = useState(false);
@@ -51,13 +55,22 @@ const Home = () => {
         onSpin={onSpin}
         onChangeOptions={setItems}
       />
-      <div className="grow h-full flex items-center justify-center bg-background-500">
-        <Roulette
-          prizeNumber={prizeNumber.current}
-          data={items.map((item) => item.item)}
-          mustStartSpinning={mustStartSpinning}
-          onSpinComplete={onSpinComplete}
-        />
+      <div className="grow h-full flex flex-col bg-background-500 p-4">
+        <button
+          className="shrink-0 flex items-center text-primary-500 hover:text-primary-900 
+          transition-colors duration-200 self-end"
+          onClick={() => signOut(auth)}
+        >
+          <LogOutIcon className="h-6 w-6" />
+        </button>
+        <div className="grow w-full flex items-center justify-center">
+          <Roulette
+            prizeNumber={prizeNumber.current}
+            data={items.map((item) => item.item)}
+            mustStartSpinning={mustStartSpinning}
+            onSpinComplete={onSpinComplete}
+          />
+        </div>
       </div>
       {isModalOpen && window && (
         <Confetti
