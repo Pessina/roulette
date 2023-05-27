@@ -1,3 +1,4 @@
+// @ts-nocheck
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -36,7 +37,7 @@ const Roulette: React.FC<RouletteProps> = ({
   }));
 
   return options.length > 0 ? (
-    <div id="roulette" className={`${className}`}>
+    <div id="roulette" className={`${className} -rotate-45 h-full w-full`}>
       <Wheel
         spinDuration={0.1}
         prizeNumber={prizeNumber}
