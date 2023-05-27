@@ -36,11 +36,15 @@ const Home = () => {
   const onSpinComplete = useCallback(() => {
     setMustStartSpinning(false);
     setIsModalOpen(true);
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 1000 * 5);
   }, []);
 
   return (
     <div className="h-full w-full flex bg-white">
       <Sidebar
+        disabled={isModalOpen}
         items={items}
         isLoading={isLoading}
         className="max-w-[400px] shrink-0 grow h-full"
@@ -57,16 +61,20 @@ const Home = () => {
       </div>
       {isModalOpen && window && (
         <Confetti
-          width={window.innerWidth}
-          height={window.innerHeight}
+          width={window?.innerWidth}
+          height={window?.innerHeight}
           recycle={true}
           numberOfPieces={1000}
           onConfettiComplete={() => setIsModalOpen(false)}
         />
       )}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <p className="text-text-100">
-          Congratulations the prize is {items[prizeNumber.current]?.item}
+        <p className="text-text-100 font-bold text-lg">
+          Congratulations! You won the prize:{" "}
+          <span className="text-primary-500">
+            {items[prizeNumber.current]?.item}
+          </span>{" "}
+          🎉
         </p>
       </Modal>
     </div>

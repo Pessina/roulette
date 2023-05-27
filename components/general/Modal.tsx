@@ -1,7 +1,5 @@
 import React, { FC, ReactNode, useEffect } from "react";
 
-import { CrossIcon } from "./icons";
-
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -31,10 +29,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
         flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="self-end" onClick={onClose}>
-          <CrossIcon className="text-text-900" />
-        </button>
-        <div className="mt-2 text-text-100">{children}</div>
+        <div className="text-text-100">{children}</div>
       </div>
     </div>
   );

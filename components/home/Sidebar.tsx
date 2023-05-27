@@ -18,6 +18,7 @@ type SidebarProps = {
   className?: string;
   isLoading: boolean;
   items: Item[];
+  disabled?: boolean;
 };
 
 const Sidebar: FC<SidebarProps> = ({
@@ -26,6 +27,7 @@ const Sidebar: FC<SidebarProps> = ({
   onChangeOptions,
   isLoading,
   items,
+  disabled,
 }) => {
   const [input, setInput] = useState("");
 
@@ -94,6 +96,7 @@ const Sidebar: FC<SidebarProps> = ({
             </ListItem>
           </ul>
           <Button
+            disabled={disabled}
             theme="success"
             onClick={onSpin}
             className="shrink-0 bg-primary-500 text-text-100 mt-4"
