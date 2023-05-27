@@ -25,3 +25,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+#roulette canvas {
+  height: min(62vw, 62vh) !important;
+  width: min(62vw, 62vh) !important;
+}

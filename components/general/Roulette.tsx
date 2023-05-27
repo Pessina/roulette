@@ -36,7 +36,7 @@ const Roulette: React.FC<RouletteProps> = ({
   }));
 
   return options.length > 0 ? (
-    <div className={className}>
+    <div id="roulette" className={`${className}`}>
       <Wheel
         spinDuration={0.1}
         prizeNumber={prizeNumber}

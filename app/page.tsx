@@ -48,34 +48,37 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="h-full w-full flex bg-white">
-      <Sidebar
-        disabled={isModalOpen}
-        items={items}
-        isLoading={isLoading}
-        className="max-w-[400px] shrink-0 grow h-full"
-        onSpin={onSpin}
-        onChangeOptions={setItems}
-      />
-      <div className="grow h-full flex flex-col bg-background-500 p-4">
-        <button
-          className="shrink-0 flex items-center text-primary-500 hover:text-primary-900 
+    <>
+      <div className="h-full w-full flex bg-white">
+        <Sidebar
+          disabled={isModalOpen}
+          items={items}
+          isLoading={isLoading}
+          className="min-w-[400px] shrink-0 grow h-full"
+          onSpin={onSpin}
+          onChangeOptions={setItems}
+        />
+        <div className="grow-[6] h-full flex flex-col bg-background-500 p-4">
+          <button
+            className="shrink-0 flex items-center text-primary-500 hover:text-primary-900 
           transition-colors duration-200 self-end"
-          onClick={() => signOut(auth)}
-        >
-          <LogOutIcon className="h-6 w-6" />
-        </button>
-        <div className="grow w-full flex items-center justify-center">
-          <Roulette
-            prizeNumber={prizeNumber.current}
-            data={items.map((item) => item.item)}
-            mustStartSpinning={mustStartSpinning}
-            onSpinComplete={onSpinComplete}
-          />
+            onClick={() => signOut(auth)}
+          >
+            <LogOutIcon className="h-6 w-6" />
+          </button>
+          <div className="grow w-full flex items-center justify-center">
+            <Roulette
+              prizeNumber={prizeNumber.current}
+              data={items.map((item) => item.item)}
+              mustStartSpinning={mustStartSpinning}
+              onSpinComplete={onSpinComplete}
+            />
+          </div>
         </div>
       </div>
       {isModalOpen && window && (
         <Confetti
+          style={{ zIndex: 10 }}
           width={window?.innerWidth}
           height={window?.innerHeight}
           recycle={true}
@@ -92,7 +95,7 @@ const Home = () => {
           🎉
         </p>
       </Modal>
-    </div>
+    </>
   );
 };
 
