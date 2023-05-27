@@ -27,8 +27,8 @@ body {
 }
 
 #roulette {
-  width: min(80vw, 80vh);
-  height: min(80vw, 80vh);
+  width: min(70vw, 70vh);
+  height: min(70vw, 70vh);
   position: relative; /* This is needed to position the pointer correctly */
 }
 
