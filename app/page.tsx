@@ -24,7 +24,7 @@ const Home = () => {
         onSpin={() => setMustStartSpinning(true)}
         onChangeOptions={setSpinOptions}
       />
-      <div className="grow h-full flex items-center justify-center">
+      <div className="grow h-full flex items-center justify-center bg-background-500">
         <Roulette
           prizeNumber={prizeNumber}
           data={spinOptions}

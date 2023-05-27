@@ -1,7 +1,9 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 import Button from "../general/Button";
-import TextArea from "../general/TextArea";
+import { EditIcon, PlusIcon, TrashIcon } from "../general/icons";
+import Input from "../general/Input";
+import ListItem from "../general/ListItem";
 
 type SidebarProps = {
   onChangeOptions: (options: string[]) => void;
@@ -10,35 +12,71 @@ type SidebarProps = {
 };
 
 const Sidebar: FC<SidebarProps> = ({ onSpin, className, onChangeOptions }) => {
-  const [text, setText] = useState("");
+  const [items, setItems] = useState<string[]>([]);
+  const [input, setInput] = useState("");
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-  };
+  useEffect(() => {
+    onChangeOptions(items);
+  }, [items, onChangeOptions]);
 
   return (
-    <div className={`${className} p-4 bg-white shadow-lg`}>
+    <div className={`${className} p-4 shadow-lg bg-background-900`}>
       <form
         className="flex flex-col h-full justify-between"
         onSubmit={(e) => e.preventDefault()}
       >
-        <TextArea
-          label="Text"
-          className="min-h-[400px]"
-          onChange={(e) =>
-            onChangeOptions(
-              e.target.value.split("\n").map((line) => line.trim())
-            )
-          }
-        />
-        <div className="flex gap-4">
-          <Button theme="primary" onClick={onSpin} className="grow">
-            Save
-          </Button>
-          <Button theme="success" onClick={onSpin} className="grow">
-            Spin
-          </Button>
-        </div>
+        <ul className="flex flex-col gap-2 text-text-700 tex-sm grow">
+          {items.map((item, index) => (
+            <ListItem
+              className="bg-background-500"
+              leftIcon={
+                <EditIcon className="h-4 w-4 text-text-900 flex items-center" />
+              }
+              rightIcon={
+                <button
+                  type="button"
+                  onClick={() =>
+                    setItems((prev) => prev.filter((i) => i !== item))
+                  }
+                >
+                  <TrashIcon className="h-4 w-4 text-text-900 flex items-center" />
+                </button>
+              }
+              key={index}
+            >
+              {item}
+            </ListItem>
+          ))}
+          <ListItem
+            className="bg-background-500"
+            leftIcon={
+              <button
+                onClick={() => {
+                  setItems((prev) => [...prev, input]);
+                  setInput("");
+                }}
+                className="text-text-900 flex items-center"
+              >
+                <PlusIcon className="h-4 w-4" />
+              </button>
+            }
+          >
+            <Input
+              theme="none"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="text-text-500 bg-background-500"
+              placeholder="Add an option"
+            />
+          </ListItem>
+        </ul>
+        <Button
+          theme="success"
+          onClick={onSpin}
+          className="shrink-0 bg-primary-500 text-text-100"
+        >
+          Spin
+        </Button>
       </form>
     </div>
   );

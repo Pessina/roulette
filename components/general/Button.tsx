@@ -11,31 +11,31 @@ const Button: FC<ButtonProps> = ({
   className = "",
   ...rest
 }) => {
-  let bgColor = "bg-blue-500";
-  let hoverBgColor = "hover:bg-blue-700";
-  let activeBgColor = "active:bg-blue-800";
-  let borderColor = "border-blue-500";
-  let textColor = "text-white";
+  let bgColor = "bg-primary-light";
+  let hoverBgColor = "hover:bg-primary-dark";
+  let activeBgColor = "active:bg-primary-darker";
+  let borderColor = "border-primary-light";
+  let textColor = "text-text-light";
   let shadow = "shadow-md";
 
   if (theme === "secondary") {
-    bgColor = "bg-gray-500";
-    hoverBgColor = "hover:bg-gray-700";
-    activeBgColor = "active:bg-gray-800";
-    borderColor = "border-gray-500";
-    textColor = "text-white";
+    bgColor = "bg-secondary-light";
+    hoverBgColor = "hover:bg-secondary-dark";
+    activeBgColor = "active:bg-secondary-darker";
+    borderColor = "border-secondary-light";
+    textColor = "text-text-dark";
   } else if (theme === "danger") {
-    bgColor = "bg-red-500";
-    hoverBgColor = "hover:bg-red-700";
-    activeBgColor = "active:bg-red-800";
-    borderColor = "border-red-500";
-    textColor = "text-white";
+    bgColor = "bg-danger-light";
+    hoverBgColor = "hover:bg-danger-dark";
+    activeBgColor = "active:bg-danger-darker";
+    borderColor = "border-danger-light";
+    textColor = "text-text-light";
   } else if (theme === "success") {
-    bgColor = "bg-green-500";
-    hoverBgColor = "hover:bg-green-700";
-    activeBgColor = "active:bg-green-800";
-    borderColor = "border-green-500";
-    textColor = "text-white";
+    bgColor = "bg-success-light";
+    hoverBgColor = "hover:bg-success-dark";
+    activeBgColor = "active:bg-success-darker";
+    borderColor = "border-success-light";
+    textColor = "text-text-light";
   }
 
   return (
