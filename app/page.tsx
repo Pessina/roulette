@@ -20,6 +20,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
   let prizeNumber = useRef(0);
+  const refTimeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -40,7 +41,8 @@ const Home = () => {
   const onSpinComplete = useCallback(() => {
     setMustStartSpinning(false);
     setIsModalOpen(true);
-    setTimeout(() => {
+    refTimeout.current && clearTimeout(refTimeout.current);
+    refTimeout.current = setTimeout(() => {
       setIsModalOpen(false);
     }, 1000 * 5);
   }, []);

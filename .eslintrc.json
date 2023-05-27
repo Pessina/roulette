@@ -8,5 +8,8 @@
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
     "no-undef": "error"
+  },
+  "globals": {
+    "NodeJS": true
   }
 }
