@@ -22,19 +22,19 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-gray-500 
-      bg-opacity-50 transition-opacity duration-300 z-30"
+      className="fixed inset-0 flex items-center justify-center bg-background-700 
+      bg-opacity-80 transition-opacity duration-300 z-50"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-lg p-4 relative transition-transform duration-300 transform
+        className="bg-background-500 rounded-lg shadow-lg p-4 relative transition-transform duration-300 transform
         flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <button className="self-end" onClick={onClose}>
-          <CrossIcon className="text-gray-700" />
+          <CrossIcon className="text-text-900" />
         </button>
-        <div className="mt-2">{children}</div>
+        <div className="mt-2 text-text-100">{children}</div>
       </div>
     </div>
   );

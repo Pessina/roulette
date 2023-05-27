@@ -1,7 +1,8 @@
 "use client";
 import "../firebase";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Confetti from "react-confetti";
 
 import { getItems } from "@/api/getItems";
 import { Item } from "@/api/types";
@@ -14,23 +15,28 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
+  let prizeNumber = useRef(0);
 
   useEffect(() => {
     const fetchItems = async () => {
       const items = await getItems();
       setIsLoading(false);
       setItems(items);
+      prizeNumber.current = Math.floor(Math.random() * items.length);
     };
 
     fetchItems();
   }, []);
 
-  const prizeNumber = useMemo(
-    () => Math.floor(Math.random() * items.length),
-    [items.length]
-  );
+  const onSpin = useCallback(() => {
+    setMustStartSpinning(true);
+    prizeNumber.current = Math.floor(Math.random() * items.length);
+  }, [items.length]);
 
-  const onSpinComplete = useCallback(() => setMustStartSpinning(false), []);
+  const onSpinComplete = useCallback(() => {
+    setMustStartSpinning(false);
+    setIsModalOpen(true);
+  }, []);
 
   return (
     <div className="h-full w-full flex bg-white">
@@ -38,22 +44,30 @@ const Home = () => {
         items={items}
         isLoading={isLoading}
         className="max-w-[400px] shrink-0 grow h-full"
-        onSpin={() => setMustStartSpinning(true)}
+        onSpin={onSpin}
         onChangeOptions={setItems}
       />
       <div className="grow h-full flex items-center justify-center bg-background-500">
         <Roulette
-          prizeNumber={prizeNumber}
+          prizeNumber={prizeNumber.current}
           data={items.map((item) => item.item)}
           mustStartSpinning={mustStartSpinning}
-          onSpinComplete={() => {
-            onSpinComplete();
-            setIsModalOpen(true);
-          }}
+          onSpinComplete={onSpinComplete}
         />
       </div>
+      {isModalOpen && window && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={true}
+          numberOfPieces={1000}
+          onConfettiComplete={() => setIsModalOpen(false)}
+        />
+      )}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <p className="text-gray-700">Testing text</p>
+        <p className="text-text-100">
+          Congratulations the prize is {items[prizeNumber.current]?.item}
+        </p>
       </Modal>
     </div>
   );
