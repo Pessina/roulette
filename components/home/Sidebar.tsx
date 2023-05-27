@@ -1,12 +1,13 @@
 import Image from "next/image";
 import React, { FC, useState } from "react";
+import { v4 as uuid } from "uuid";
 
 import { addItem } from "@/api/addItem";
 import { removeItem } from "@/api/removeItem";
 import { Item } from "@/api/types";
 
 import Button from "../general/Button";
-import { EditIcon, PlusIcon, TrashIcon } from "../general/icons";
+import { PlusIcon, TrashIcon } from "../general/icons";
 import Input from "../general/Input";
 import ListItem from "../general/ListItem";
 import { Loader } from "../general/Loader";
@@ -50,9 +51,6 @@ const Sidebar: FC<SidebarProps> = ({
             {items.map((item, index) => (
               <ListItem
                 className="bg-background-500"
-                leftIcon={
-                  <EditIcon className="h-4 w-4 text-text-900 flex items-center" />
-                }
                 rightIcon={
                   <button
                     type="button"
@@ -74,9 +72,11 @@ const Sidebar: FC<SidebarProps> = ({
               leftIcon={
                 <button
                   onClick={async () => {
+                    if (input === "") return;
+
                     setInput("");
                     addItem(input);
-                    onChangeOptions([...items, { id: "", item: input }]);
+                    onChangeOptions([...items, { id: uuid(), item: input }]);
                   }}
                   className="text-text-900 flex items-center"
                 >
