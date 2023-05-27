@@ -1,20 +1,67 @@
 "use client";
+import "firebase/auth";
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 import Button from "@/components/general/Button";
 import Input from "@/components/general/Input";
+import { auth } from "@/firebase";
+
+type LoginForm = {
+  email: string;
+  password: string;
+};
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Email is required."),
+  password: yup.string().required("Password is required."),
+});
 
 const LoginPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    getValues,
+  } = useForm<LoginForm>({
+    resolver: yupResolver(schema),
+  });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const [inputsError, setInputsError] = useState("");
+
+  const onSubmit = async (data: LoginForm) => {
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      setInputsError("");
+    } catch (error) {
+      console.error((error as { message: string }).message);
+      setInputsError("Wrong credentials");
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    const email = getValues("email");
+    if (email) {
+      try {
+        await sendPasswordResetEmail(auth, email);
+        setInputsError("");
+      } catch (error) {
+        setInputsError((error as { message: string }).message);
+      }
+    } else {
+      setInputsError("Please fill in your email.");
+    }
   };
 
   return (
@@ -32,27 +79,30 @@ const LoginPage = () => {
             type="email"
             id="email"
             label="Email"
-            {...register("email", { required: "Email is required." })}
+            {...register("email")}
             className="w-full px-4 py-2 bg-background-700 text-text-100 rounded focus:ring-primary-500"
+            error={errors.email?.message}
           />
           <Input
             type="password"
             id="password"
             label="Password"
-            {...register("password", { required: "Password is required." })}
+            {...register("password")}
             className="w-full px-4 py-2 bg-background-700 text-text-100 rounded focus:ring-primary-500"
+            error={errors.password?.message}
           />
           <Button type="submit" theme="primary">
             Login
           </Button>
         </form>
         <div className="text-center">
-          <a
-            href="#"
+          <button
+            onClick={handleForgotPassword}
             className="text-primary-500 hover:text-primary-700 transition-colors"
           >
             Forgot Password?
-          </a>
+          </button>
+          {inputsError && <div className="text-red-500">{inputsError}</div>}
         </div>
       </div>
     </div>
