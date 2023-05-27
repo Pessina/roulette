@@ -4,7 +4,7 @@ import "../firebase";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 
-import { getItems } from "@/api/getItems";
+import { getItems } from "@/api/item";
 import { Item } from "@/api/types";
 import Modal from "@/components/general/Modal";
 import Roulette from "@/components/general/Roulette";

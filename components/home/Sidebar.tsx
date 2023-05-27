@@ -2,8 +2,7 @@ import Image from "next/image";
 import React, { FC, useState } from "react";
 import { v4 as uuid } from "uuid";
 
-import { addItem } from "@/api/addItem";
-import { removeItem } from "@/api/removeItem";
+import { addItem, removeItem } from "@/api/item";
 import { Item } from "@/api/types";
 
 import Button from "../general/Button";
@@ -97,9 +96,9 @@ const Sidebar: FC<SidebarProps> = ({
           </ul>
           <Button
             disabled={disabled}
-            theme="success"
+            theme="primary"
             onClick={onSpin}
-            className="shrink-0 bg-primary-500 text-text-100 mt-4"
+            className="shrink-0 mt-4"
           >
             Spin
           </Button>
