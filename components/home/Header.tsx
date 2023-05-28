@@ -43,11 +43,11 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
       </div>
       <Button
         theme="danger"
-        className="flex items-center text-xl hover:text-primary-500 transition-colors duration-200 gap-2"
+        className="flex items-center text-xl gap-2"
         onClick={() => signOut(auth)}
+        rightIcon={<LogOutIcon className="h-4 w-4" />}
       >
         Logout
-        <LogOutIcon className="h-4 w-4" />
       </Button>
     </header>
   );

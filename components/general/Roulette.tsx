@@ -1,4 +1,3 @@
-// @ts-nocheck
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -22,11 +21,11 @@ const Roulette: React.FC<RouletteProps> = ({
   className,
   prizeNumber,
 }) => {
-  const backgroundColors = data.map((_, index) =>
-    index % 2 === 0 ? "#bd124f" : "#063bbf"
+  const colorPalette = ["#f6157c", "#0953fa", "#bd124f", "#063bbf", "#121212"];
+  const backgroundColors = data.map(
+    (_, index) => colorPalette[index % colorPalette.length]
   );
-
-  const textColors = data.map(() => "#c0c0c0");
+  const textColors = data.map(() => "#f2f2f2");
 
   const options = data.map((option, index) => ({
     option,
@@ -39,7 +38,7 @@ const Roulette: React.FC<RouletteProps> = ({
   return options.length > 0 ? (
     <div id="roulette" className={`${className}`}>
       <Wheel
-        spinDuration={0.1}
+        spinDuration={2}
         prizeNumber={prizeNumber}
         mustStartSpinning={mustStartSpinning}
         onStopSpinning={onSpinComplete}

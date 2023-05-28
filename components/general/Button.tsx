@@ -6,6 +6,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "small" | "medium" | "large";
   className?: string;
   loading?: boolean;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 };
 
 const Button: FC<ButtonProps> = ({
@@ -14,6 +16,8 @@ const Button: FC<ButtonProps> = ({
   size = "medium",
   className = "",
   loading = false,
+  leftIcon,
+  rightIcon,
   ...rest
 }) => {
   let bgColor = "bg-primary-500";
@@ -50,15 +54,16 @@ const Button: FC<ButtonProps> = ({
   return (
     <button
       {...rest}
-      className={`flex justify-center items-center space-x-2 rounded-md ${padding} ${bgColor} ${borderColor} ${textColor} ${hoverBgColor} ${activeBgColor}
+      className={`flex justify-center items-center gap-2 rounded-md ${padding} ${bgColor} ${borderColor} ${textColor} ${hoverBgColor} ${activeBgColor}
       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-500 focus:ring-${theme}-500 ${shadow} transition-all duration-150 ${className}`}
     >
       {loading ? (
         <FaSpinner className="animate-spin" />
       ) : (
         <>
-          <FaSpinner />
+          {leftIcon}
           <span>{children}</span>
+          {rightIcon}
         </>
       )}
     </button>
