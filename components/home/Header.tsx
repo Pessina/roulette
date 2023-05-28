@@ -1,17 +1,19 @@
 import { signOut } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { FiLogOut } from "react-icons/fi";
 
 import { auth } from "../../firebase";
 import Button from "../general/Button";
-import { LogOutIcon } from "../general/icons";
 
 type HeaderProps = {
   className?: string;
 };
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <header
       className={`flex justify-between pr-8 items-center bg-background-900 text-text-700 shadow-lg ${className}`}
@@ -42,10 +44,20 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         </nav>
       </div>
       <Button
+        loading={isLoading}
         theme="danger"
         className="flex items-center text-xl gap-2"
-        onClick={() => signOut(auth)}
-        rightIcon={<LogOutIcon className="h-4 w-4" />}
+        onClick={async () => {
+          setIsLoading(true);
+          try {
+            await signOut(auth);
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setIsLoading(false);
+          }
+        }}
+        rightIcon={<FiLogOut />}
       >
         Logout
       </Button>

@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import Button from "@/components/general/Button";
+import Card from "@/components/general/Card";
 import Input from "@/components/general/Input";
 import { auth } from "@/firebase";
 
@@ -43,9 +44,11 @@ const LoginPage = () => {
 
   const [inputsError, setInputsError] = useState("");
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: LoginForm) => {
     try {
+      setIsLoading(true);
       await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, data.email, data.password);
       setInputsError("");
@@ -53,6 +56,8 @@ const LoginPage = () => {
     } catch (error) {
       console.error((error as { message: string }).message);
       setInputsError("Wrong credentials");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -60,10 +65,13 @@ const LoginPage = () => {
     const email = getValues("email");
     if (email) {
       try {
+        setIsLoading(true);
         await sendPasswordResetEmail(auth, email);
         setInputsError("");
       } catch (error) {
         setInputsError((error as { message: string }).message);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       setInputsError("Please fill in your email.");
@@ -72,7 +80,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background-900">
-      <div className="shadow-lg p-6 rounded-lg bg-background-500 flex flex-col gap-4 w-[300px] max-w-[80%]">
+      <Card className="bg-background-500 flex flex-col gap-4 w-[300px] max-w-[80%]">
         <Image
           src="/logo.png"
           alt="logo"
@@ -97,7 +105,7 @@ const LoginPage = () => {
             className="w-full px-4 py-2 bg-background-700 text-text-100 rounded focus:ring-primary-500"
             error={errors.password?.message}
           />
-          <Button type="submit" theme="primary">
+          <Button loading={isLoading} type="submit" theme="primary">
             Login
           </Button>
         </form>
@@ -110,7 +118,7 @@ const LoginPage = () => {
           </button>
           {inputsError && <div className="text-red-500">{inputsError}</div>}
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

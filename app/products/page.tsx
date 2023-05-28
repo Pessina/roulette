@@ -1,10 +1,11 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
+import { AiOutlinePlus } from "react-icons/ai";
+import { BiTrash } from "react-icons/bi";
 import { v4 as uuid } from "uuid";
 
 import { addItem, getItems, removeItem } from "@/api/item";
 import { Item } from "@/api/types";
-import { PlusIcon, TrashIcon } from "@/components/general/icons";
 import Input from "@/components/general/Input";
 import ListItem from "@/components/general/ListItem";
 import { Loader } from "@/components/general/Loader";
@@ -55,7 +56,7 @@ const Products: FC = () => {
                         }}
                         className="text-error-500 focus:outline-none"
                       >
-                        <TrashIcon className="h-4 w-4" />
+                        <BiTrash className="h-4 w-4" />
                       </button>
                     }
                     key={index}
@@ -78,7 +79,7 @@ const Products: FC = () => {
                       }}
                       className="text-primary-500 focus:outline-none"
                     >
-                      <PlusIcon className="h-4 w-4" />
+                      <AiOutlinePlus className="h-4 w-4" />
                     </button>
                   }
                 >
