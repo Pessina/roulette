@@ -1,7 +1,6 @@
 "use client";
-import "../firebase";
-
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FaSpinner } from "react-icons/fa";
 
 import { getItems } from "@/api/item";
@@ -12,6 +11,8 @@ import Roulette from "@/components/general/Roulette";
 import Congratulations from "@/components/home/Congratulations";
 
 const Home = () => {
+  const { t } = useTranslation("", { keyPrefix: "homePage" });
+
   const [mustStartSpinning, setMustStartSpinning] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,7 +61,7 @@ const Home = () => {
               loading={mustStartSpinning}
               leftIcon={<FaSpinner />}
             >
-              Spin
+              {t("spinButton")}
             </Button>
           </>
         )}

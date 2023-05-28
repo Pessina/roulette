@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type RouletteProps = {
   data: string[];
@@ -21,6 +22,7 @@ const Roulette: React.FC<RouletteProps> = ({
   className,
   prizeNumber,
 }) => {
+  const { t } = useTranslation("", { keyPrefix: "roulette" });
   const colorPalette = ["#f6157c", "#0953fa", "#bd124f", "#063bbf", "#121212"];
   const backgroundColors = data.map(
     (_, index) => colorPalette[index % colorPalette.length]
@@ -56,7 +58,7 @@ const Roulette: React.FC<RouletteProps> = ({
       />
     </div>
   ) : (
-    <p className="text-500">No options added yet</p>
+    <p className="text-500">{t("noOptions")}</p>
   );
 };
 

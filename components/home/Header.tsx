@@ -3,6 +3,7 @@ import { signOut } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FiLogOut } from "react-icons/fi";
 
 import { auth } from "../../firebase";
@@ -13,6 +14,8 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
+  const { t } = useTranslation("", { keyPrefix: "header" });
+
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -21,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
     >
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
-          <Image src="/logo.png" width={200} height={200} alt="App logo" />
+          <Image src="/logo.png" width={200} height={200} alt={t("logoAlt")} />
         </Link>
         <nav className="ml-4">
           <ul className="flex space-x-4">
@@ -30,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
                 href="/"
                 className="text-xl hover:text-primary-500 transition-colors duration-200"
               >
-                Roulette
+                {t("roulette")}
               </Link>
             </li>
             <li>
@@ -38,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
                 href="/products"
                 className="text-xl hover:text-primary-500 transition-colors duration-200"
               >
-                Products
+                {t("products")}
               </Link>
             </li>
           </ul>
@@ -60,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         }}
         rightIcon={<FiLogOut />}
       >
-        Logout
+        {t("logout")}
       </Button>
     </header>
   );

@@ -1,13 +1,32 @@
 {
   "loginPage": {
-    "emailLabel": "Email",
-    "passwordLabel": "Password",
-    "emailErrorMessage": "Invalid email address",
-    "emailRequiredMessage": "Email is required",
-    "passwordRequiredMessage": "Password is required",
-    "loginButton": "Login",
-    "forgotPasswordButton": "Forgot Password?",
-    "wrongCredentialsError": "Wrong credentials",
-    "fillEmailError": "Please fill in your email"
+    "emailLabel": "E-mail",
+    "passwordLabel": "Senha",
+    "emailErrorMessage": "Endereço de e-mail inválido",
+    "emailRequiredMessage": "E-mail é obrigatório",
+    "passwordRequiredMessage": "Senha é obrigatória",
+    "loginButton": "Entrar",
+    "forgotPasswordButton": "Esqueceu a senha?",
+    "wrongCredentialsError": "Credenciais incorretas",
+    "fillEmailError": "Por favor, preencha seu e-mail"
+  },
+  "homePage": {
+    "spinButton": "Sortear"
+  },
+  "roulette": {
+    "noOptions": "Ainda não foram adicionadas opções"
+  },
+  "products": {
+    "addItem": "Adicionar um produto"
+  },
+  "header": {
+    "logoAlt": "Logo do aplicativo",
+    "roulette": "Roleta",
+    "products": "Produtos",
+    "logout": "Sair"
+  },
+  "congratulations": {
+    "messagePrefix": "Parabéns! Você ganhou o prêmio:",
+    "messageSuffix": "🎉"
   }
 }

@@ -1,6 +1,6 @@
-// Congratulations.tsx
 import React from "react";
 import Confetti from "react-confetti";
+import { useTranslation } from "react-i18next";
 
 import { Item } from "@/api/types";
 import Modal from "@/components/general/Modal";
@@ -18,6 +18,8 @@ const Congratulations: React.FC<CongratulationsProps> = ({
   items,
   prizeNumber,
 }) => {
+  const { t } = useTranslation("", { keyPrefix: "congratulations" });
+
   return (
     <>
       {isModalOpen && window && (
@@ -32,9 +34,9 @@ const Congratulations: React.FC<CongratulationsProps> = ({
       )}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <p className="text-text-100 font-bold text-lg">
-          Congratulations! You won the prize:{" "}
+          {t("messagePrefix")}{" "}
           <span className="text-primary-500">{items[prizeNumber]?.item}</span>{" "}
-          🎉
+          {t("messageSuffix")}
         </p>
       </Modal>
     </>

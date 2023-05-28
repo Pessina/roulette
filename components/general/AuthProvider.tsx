@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         <Loader className="h-full w-full flex items-center justify-center" />
       ) : (
         <>
-          {user && <Header />}
+          {user && <Header className="shrink-0 sticky top-0" />}
           {children}
         </>
       )}

@@ -1,5 +1,6 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { v4 as uuid } from "uuid";
@@ -14,6 +15,7 @@ const Products: FC = () => {
   const [input, setInput] = useState("");
   const [isLoading, setLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
+  const { t } = useTranslation("", { keyPrefix: "products" });
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -80,7 +82,7 @@ const Products: FC = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   className="text-text-500 bg-background-700"
-                  placeholder="Add an option"
+                  placeholder={t("addItem") ?? ""}
                 />
               </ListItem>
             </ul>
