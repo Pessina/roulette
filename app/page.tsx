@@ -1,18 +1,15 @@
+// Home.tsx
 "use client";
 import "../firebase";
 
-import { signOut } from "firebase/auth";
 import { useCallback, useEffect, useRef, useState } from "react";
-import Confetti from "react-confetti";
 
 import { getItems } from "@/api/item";
 import { Item } from "@/api/types";
-import { LogOutIcon } from "@/components/general/icons";
-import Modal from "@/components/general/Modal";
+import Button from "@/components/general/Button";
 import Roulette from "@/components/general/Roulette";
-import Sidebar from "@/components/home/Sidebar";
-
-import { auth } from "../firebase";
+import Congratulations from "@/components/home/Congratulations";
+import Header from "@/components/home/Header";
 
 const Home = () => {
   const [mustStartSpinning, setMustStartSpinning] = useState(false);
@@ -20,7 +17,6 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
   let prizeNumber = useRef(0);
-  const refTimeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -41,60 +37,36 @@ const Home = () => {
   const onSpinComplete = useCallback(() => {
     setMustStartSpinning(false);
     setIsModalOpen(true);
-    refTimeout.current && clearTimeout(refTimeout.current);
-    refTimeout.current = setTimeout(() => {
-      setIsModalOpen(false);
-    }, 1000 * 5);
   }, []);
 
   return (
     <>
-      <div className="h-full w-full flex bg-white">
-        <Sidebar
-          disabled={isModalOpen}
-          items={items}
-          isLoading={isLoading}
-          className="min-w-[400px] shrink-0 grow h-full"
-          onSpin={onSpin}
-          onChangeOptions={setItems}
-        />
-        <div className="grow-[6] h-full flex flex-col bg-background-500 p-4">
-          <button
-            className="shrink-0 flex items-center text-primary-500 hover:text-primary-900 
-          transition-colors duration-200 self-end"
-            onClick={() => signOut(auth)}
+      <div className="h-full w-full flex bg-white flex-col">
+        <Header className="shrink-0 sticky top-0" />
+        <div className="grow flex flex-col gap-10 items-center justify-center bg-background-500 p-4">
+          <Roulette
+            prizeNumber={prizeNumber.current}
+            data={items.map((item) => item.item)}
+            mustStartSpinning={mustStartSpinning}
+            onSpinComplete={onSpinComplete}
+          />
+          <Button
+            size="large"
+            onClick={onSpin}
+            className="mt-8 min-w-[200px] transition-transform duration-500 ease-in-out transform active:scale-90" // Add a scale effect on press
+            disabled={mustStartSpinning || isLoading}
+            loading={mustStartSpinning}
           >
-            <LogOutIcon className="h-6 w-6" />
-          </button>
-          <div className="grow w-full flex items-center justify-center">
-            <Roulette
-              prizeNumber={prizeNumber.current}
-              data={items.map((item) => item.item)}
-              mustStartSpinning={mustStartSpinning}
-              onSpinComplete={onSpinComplete}
-            />
-          </div>
+            Spin
+          </Button>
         </div>
       </div>
-      {isModalOpen && window && (
-        <Confetti
-          style={{ zIndex: 10 }}
-          width={window?.innerWidth}
-          height={window?.innerHeight}
-          recycle={true}
-          numberOfPieces={1000}
-          onConfettiComplete={() => setIsModalOpen(false)}
-        />
-      )}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <p className="text-text-100 font-bold text-lg">
-          Congratulations! You won the prize:{" "}
-          <span className="text-primary-500">
-            {items[prizeNumber.current]?.item}
-          </span>{" "}
-          🎉
-        </p>
-      </Modal>
+      <Congratulations
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        items={items}
+        prizeNumber={prizeNumber.current}
+      />
     </>
   );
 };

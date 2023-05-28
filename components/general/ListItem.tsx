@@ -19,12 +19,12 @@ const ListItem: FC<ListItemProps> = ({
 }) => {
   return (
     <Card
-      className={`flex items-center py-2 px-4 ${className}`}
+      className={`flex items-center py-2 px-4 gap-4 ${className}`}
       onClick={onClick}
     >
-      {leftIcon && <div className={`mr-4`}>{leftIcon}</div>}
+      {leftIcon}
       <div className="flex-1">{children}</div>
-      {rightIcon && <div className={`ml-4`}>{rightIcon}</div>}
+      {rightIcon}
     </Card>
   );
 };
