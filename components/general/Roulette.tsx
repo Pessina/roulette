@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 type RouletteI18N = {
   noOptions: string;
@@ -28,7 +27,6 @@ const Roulette: React.FC<RouletteProps> = ({
   prizeNumber,
   i18n,
 }) => {
-  const { t } = useTranslation("", { keyPrefix: "roulette" });
   const colorPalette = ["#f6157c", "#0953fa", "#bd124f", "#063bbf", "#121212"];
   const backgroundColors = data.map(
     (_, index) => colorPalette[index % colorPalette.length]
