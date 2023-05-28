@@ -10,7 +10,6 @@ import Button from "@/components/general/Button";
 import { Loader } from "@/components/general/Loader";
 import Roulette from "@/components/general/Roulette";
 import Congratulations from "@/components/home/Congratulations";
-import Header from "@/components/home/Header";
 
 const Home = () => {
   const [mustStartSpinning, setMustStartSpinning] = useState(false);
@@ -42,32 +41,29 @@ const Home = () => {
 
   return (
     <>
-      <div className="h-full w-full flex bg-white flex-col">
-        <Header className="shrink-0 sticky top-0" />
-        <div className="grow flex flex-col gap-10 items-center justify-center bg-background-500 p-4">
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <>
-              <Roulette
-                prizeNumber={prizeNumber.current}
-                data={items.map((item) => item.item)}
-                mustStartSpinning={mustStartSpinning}
-                onSpinComplete={onSpinComplete}
-              />
-              <Button
-                size="large"
-                onClick={onSpin}
-                className="mt-8 min-w-[200px] active:scale-90 text-xl"
-                disabled={mustStartSpinning}
-                loading={mustStartSpinning}
-                leftIcon={<FaSpinner />}
-              >
-                Spin
-              </Button>
-            </>
-          )}
-        </div>
+      <div className="h-full flex flex-col gap-10 items-center justify-center bg-background-500 p-4">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <Roulette
+              prizeNumber={prizeNumber.current}
+              data={items.map((item) => item.item)}
+              mustStartSpinning={mustStartSpinning}
+              onSpinComplete={onSpinComplete}
+            />
+            <Button
+              size="large"
+              onClick={onSpin}
+              className="mt-8 min-w-[200px] active:scale-90 text-xl"
+              disabled={mustStartSpinning}
+              loading={mustStartSpinning}
+              leftIcon={<FaSpinner />}
+            >
+              Spin
+            </Button>
+          </>
+        )}
       </div>
       <Congratulations
         isModalOpen={isModalOpen}

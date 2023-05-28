@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 
 import { AuthProvider } from "@/components/general/AuthProvider";
+import Header from "@/components/home/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +16,11 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} h-full`}>
-        <AuthProvider>{children}</AuthProvider>
+      <body className={`${inter.className} h-full flex flex-col`}>
+        <AuthProvider>
+          <Header className="sticky top-0" />
+          <div className="grow">{children}</div>
+        </AuthProvider>
       </body>
     </html>
   );
