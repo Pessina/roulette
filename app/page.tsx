@@ -52,12 +52,13 @@ const Home = () => {
               data={items.map((item) => item.item)}
               mustStartSpinning={mustStartSpinning}
               onSpinComplete={onSpinComplete}
+              i18n={{ noOptions: t("noOptions") }}
             />
             <Button
               size="large"
               onClick={onSpin}
               className="mt-8 min-w-[200px] active:scale-90 text-xl"
-              disabled={mustStartSpinning}
+              disabled={items.length === 0 || mustStartSpinning}
               loading={mustStartSpinning}
               leftIcon={<FaSpinner />}
             >

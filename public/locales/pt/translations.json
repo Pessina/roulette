@@ -11,10 +11,8 @@
     "fillEmailError": "Por favor, preencha seu e-mail"
   },
   "homePage": {
-    "spinButton": "Sortear"
-  },
-  "roulette": {
-    "noOptions": "Ainda não foram adicionadas opções"
+    "spinButton": "Sortear",
+    "noOptions": "Ainda não foram adicionados produtos"
   },
   "products": {
     "addItem": "Adicionar um produto"

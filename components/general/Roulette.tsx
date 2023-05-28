@@ -2,12 +2,17 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+type RouletteI18N = {
+  noOptions: string;
+};
+
 type RouletteProps = {
   data: string[];
   mustStartSpinning: boolean;
   onSpinComplete: () => void;
   className?: string;
   prizeNumber: number;
+  i18n?: RouletteI18N;
 };
 
 const Wheel = dynamic(
@@ -21,6 +26,7 @@ const Roulette: React.FC<RouletteProps> = ({
   onSpinComplete,
   className,
   prizeNumber,
+  i18n,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "roulette" });
   const colorPalette = ["#f6157c", "#0953fa", "#bd124f", "#063bbf", "#121212"];
@@ -58,7 +64,7 @@ const Roulette: React.FC<RouletteProps> = ({
       />
     </div>
   ) : (
-    <p className="text-500">{t("noOptions")}</p>
+    <p className="text-500">{i18n?.noOptions}</p>
   );
 };
 
