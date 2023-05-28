@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 
 import { AuthProvider } from "@/components/general/AuthProvider";
-import Header from "@/components/home/Header";
+import TranslationProvider from "@/components/general/TranslationProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +18,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className="h-full">
       <body className={`${inter.className} h-full flex flex-col`}>
         <AuthProvider>
-          <Header className="sticky top-0" />
-          <div className="grow">{children}</div>
+          <TranslationProvider>
+            <div className="grow">{children}</div>
+          </TranslationProvider>
         </AuthProvider>
       </body>
     </html>

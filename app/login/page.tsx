@@ -1,6 +1,4 @@
 "use client";
-import "firebase/auth";
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   browserLocalPersistence,
@@ -12,27 +10,32 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 
 import Button from "@/components/general/Button";
 import Card from "@/components/general/Card";
 import Input from "@/components/general/Input";
-import { auth } from "@/firebase";
+
+import { auth } from "../../firebase";
 
 type LoginForm = {
   email: string;
   password: string;
 };
 
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Invalid email address")
-    .required("Email is required."),
-  password: yup.string().required("Password is required."),
-});
+const LoginPage: React.FC = () => {
+  const { t } = useTranslation("", { keyPrefix: "loginPage" });
+  const router = useRouter();
 
-const LoginPage = () => {
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .email(t("emailErrorMessage") ?? "")
+      .required(t("emailRequiredMessage") ?? ""),
+    password: yup.string().required(t("passwordRequiredMessage") ?? ""),
+  });
+
   const {
     register,
     handleSubmit,
@@ -43,7 +46,6 @@ const LoginPage = () => {
   });
 
   const [inputsError, setInputsError] = useState("");
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: LoginForm) => {
@@ -54,8 +56,8 @@ const LoginPage = () => {
       setInputsError("");
       router.push("/");
     } catch (error) {
-      console.error((error as { message: string }).message);
-      setInputsError("Wrong credentials");
+      console.error(error);
+      setInputsError(t("wrongCredentialsError") ?? "");
     } finally {
       setIsLoading(false);
     }
@@ -74,7 +76,7 @@ const LoginPage = () => {
         setIsLoading(false);
       }
     } else {
-      setInputsError("Please fill in your email.");
+      setInputsError(t("fillEmailError") ?? "");
     }
   };
 
@@ -92,7 +94,7 @@ const LoginPage = () => {
           <Input
             type="email"
             id="email"
-            label="Email"
+            label={t("emailLabel") ?? ""}
             {...register("email")}
             className="w-full px-4 py-2 bg-background-700 text-text-100 rounded focus:ring-primary-500"
             error={errors.email?.message}
@@ -100,13 +102,13 @@ const LoginPage = () => {
           <Input
             type="password"
             id="password"
-            label="Password"
+            label={t("passwordLabel") ?? ""}
             {...register("password")}
             className="w-full px-4 py-2 bg-background-700 text-text-100 rounded focus:ring-primary-500"
             error={errors.password?.message}
           />
           <Button loading={isLoading} type="submit" theme="primary">
-            Login
+            {t("loginButton") ?? ""}
           </Button>
         </form>
         <div className="text-center">
@@ -114,7 +116,7 @@ const LoginPage = () => {
             onClick={handleForgotPassword}
             className="text-primary-500 hover:text-primary-700 transition-colors"
           >
-            Forgot Password?
+            {t("forgotPasswordButton") ?? ""}
           </button>
           {inputsError && <div className="text-red-500">{inputsError}</div>}
         </div>

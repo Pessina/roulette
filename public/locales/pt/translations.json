@@ -1,0 +1,13 @@
+{
+  "loginPage": {
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "emailErrorMessage": "Invalid email address",
+    "emailRequiredMessage": "Email is required",
+    "passwordRequiredMessage": "Password is required",
+    "loginButton": "Login",
+    "forgotPasswordButton": "Forgot Password?",
+    "wrongCredentialsError": "Wrong credentials",
+    "fillEmailError": "Please fill in your email"
+  }
+}

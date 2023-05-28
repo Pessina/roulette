@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 
 import { auth } from "../../firebase";
+import Header from "../home/Header";
 import { Loader } from "./Loader";
 
 interface AuthContextInterface {
@@ -39,7 +40,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       {isLoadingUser ? (
         <Loader className="h-full w-full flex items-center justify-center" />
       ) : (
-        children
+        <>
+          {user && <Header />}
+          {children}
+        </>
       )}
     </AuthContext.Provider>
   );
