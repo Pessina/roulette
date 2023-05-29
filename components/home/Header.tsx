@@ -42,14 +42,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
                 {t("roulette")}
               </Link>
             </li>
-            <li>
-              <Link
-                href="/products"
-                className="text-xl hover:text-primary-500 transition-colors duration-200"
-              >
-                {t("products")}
-              </Link>
-            </li>
           </ul>
         </nav>
       </div>
