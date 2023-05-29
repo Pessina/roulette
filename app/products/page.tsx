@@ -63,8 +63,8 @@ const Products: FC = () => {
       probability: Number(data.itemProbability),
     };
     setItems([...items, newItem]);
-    await addItem(newItem);
     reset();
+    await addItem(newItem);
   };
 
   return (
