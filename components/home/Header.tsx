@@ -24,7 +24,13 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
     >
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
-          <Image src="/logo.png" width={200} height={200} alt={t("logoAlt")} />
+          <Image
+            src="/logo.png"
+            width={200}
+            height={200}
+            alt={t("logoAlt")}
+            className="w-[12em] h-auto"
+          />
         </Link>
         <nav className="ml-4">
           <ul className="flex space-x-4">
@@ -50,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
       <Button
         loading={isLoading}
         theme="danger"
-        className="flex items-center text-xl gap-2"
+        className="flex items-center text-xl gap-2 my-4"
         onClick={async () => {
           setIsLoading(true);
           try {

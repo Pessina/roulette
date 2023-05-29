@@ -82,13 +82,13 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background-900">
-      <Card className="bg-background-500 flex flex-col gap-4 w-[300px] max-w-[80%]">
+      <Card className="bg-background-500 flex flex-col gap-4 w-[20%] p-4">
         <Image
           src="/logo.png"
           alt="logo"
           width={200}
           height={200}
-          className="self-center"
+          className="self-center w-full h-auto"
         />
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <Input

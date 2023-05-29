@@ -69,7 +69,7 @@ const Products: FC = () => {
 
   return (
     <main className="p-4 h-full bg-background-900 min-h-screen">
-      <div className="max-w-screen-lg mx-auto shadow-lg p-4 bg-background-700 text-text-500 rounded-md">
+      <div className="max-w-[60%] mx-auto shadow-lg p-4 bg-background-700 text-text-500 rounded-md">
         {isLoading ? (
           <Loader className="grow text-primary-500" />
         ) : (
