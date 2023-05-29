@@ -1,6 +1,6 @@
 "use client";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -51,21 +51,29 @@ const Products: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setFocus,
     reset,
   } = useForm<FormInputs>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: FormInputs) => {
-    const newItem = {
-      id: uuid(),
-      item: data.itemName,
-      probability: Number(data.itemProbability),
-    };
-    setItems([...items, newItem]);
-    reset();
-    await addItem(newItem);
-  };
+  const onSubmit = useCallback(
+    async (data: FormInputs) => {
+      const newItem = {
+        id: uuid(),
+        item: data.itemName,
+        probability: Number(data.itemProbability),
+      };
+      setItems([...items, newItem]);
+      setFocus("itemName");
+      reset({
+        itemName: "",
+        itemProbability: "",
+      });
+      await addItem(newItem);
+    },
+    [items, reset, setFocus]
+  );
 
   return (
     <main className="p-4 h-full bg-background-900 min-h-screen">
