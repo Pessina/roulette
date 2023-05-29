@@ -94,7 +94,10 @@ const Products: FC = () => {
                   }
                   key={index}
                 >
-                  {`${item.item} - ${item.probability}`}
+                  <div className="flex flex-col gap-2">
+                    <p className="font-bold text-primary-500">{`📦 ${item.item}`}</p>{" "}
+                    <p className="font-bold text-secondary-500">{`🎲 ${item.probability}`}</p>
+                  </div>
                 </ListItem>
               ))}
               <ListItem
@@ -107,20 +110,24 @@ const Products: FC = () => {
                   </button>
                 }
               >
-                <Input
-                  {...register("itemName")}
-                  theme="none"
-                  error={errors.itemName?.message}
-                  className="text-text-500 bg-background-700"
-                  placeholder={t("addItem") ?? ""}
-                />
-                <Input
-                  {...register("itemProbability")}
-                  theme="none"
-                  error={errors.itemProbability?.message}
-                  className="text-text-500 bg-background-700"
-                  placeholder={t("addProbability") ?? ""}
-                />
+                <div className="flex gap-4">
+                  <Input
+                    {...register("itemName")}
+                    label={`📦 ${t("itemLabel")}`}
+                    theme="none"
+                    error={errors.itemName?.message}
+                    className="text-primary-500 bg-background-700"
+                    placeholder={t("addItem") ?? ""}
+                  />
+                  <Input
+                    {...register("itemProbability")}
+                    label={`🎲 ${t("probabilityLabel")}`}
+                    theme="none"
+                    error={errors.itemProbability?.message}
+                    className="text-secondary-500 bg-background-700"
+                    placeholder={t("addProbability") ?? ""}
+                  />
+                </div>
               </ListItem>
             </ul>
           </form>

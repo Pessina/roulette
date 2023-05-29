@@ -15,11 +15,13 @@
     "noOptions": "Ainda não foram adicionados prêmios"
   },
   "products": {
-    "addItem": "Adicionar item",
-    "addProbability": "Adicionar probabilidade",
-    "itemNameRequired": "O nome do item é obrigatório",
+    "itemLabel": "Nome",
+    "probabilityLabel": "Probabilidade",
+    "addItem": "iPhone, Viagem, etc.",
+    "addProbability": "1, 5, 10, 30...",
+    "itemNameRequired": "O nome do prêmio é obrigatório",
     "positiveProbability": "A probabilidade deve ser um número positivo",
-    "probabilityRequired": "A probabilidade do item é obrigatória"
+    "probabilityRequired": "A probabilidade do prêmio é obrigatória"
   },
   "header": {
     "logoAlt": "Logo do aplicativo",
