@@ -60,6 +60,9 @@ const Roulette: React.FC<RouletteProps> = ({
         fontStyle="normal"
         textDistance={60}
         disableInitialAnimation
+        pointerProps={{
+          src: "/pointer-bright.png",
+        }}
       />
     </div>
   ) : (

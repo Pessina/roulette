@@ -20,6 +20,8 @@ const Home = () => {
   const [items, setItems] = useState<Item[]>([]);
   let prizeNumber = useRef(0);
 
+  const canSpin = items.length > 0 && !mustStartSpinning;
+
   useEffect(() => {
     const fetchItems = async () => {
       const items = await getItems();
@@ -41,6 +43,19 @@ const Home = () => {
     setIsModalOpen(true);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.code === "Enter" || e.code === "Space") && canSpin) {
+        setIsModalOpen(false);
+        onSpin();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [items, onSpin, mustStartSpinning, canSpin]);
+
   return (
     <>
       <div className="h-full flex flex-col gap-10 items-center justify-center bg-background-500 p-4">
@@ -59,7 +74,7 @@ const Home = () => {
               size="large"
               onClick={onSpin}
               className="mt-8 min-w-[200px] active:scale-90 text-xl"
-              disabled={items.length === 0 || mustStartSpinning}
+              disabled={!canSpin}
               loading={mustStartSpinning}
               leftIcon={<FaSpinner />}
             >

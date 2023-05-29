@@ -95,8 +95,10 @@ const Products: FC = () => {
                   key={index}
                 >
                   <div className="flex flex-col gap-2">
-                    <p className="font-bold text-primary-500">{`📦 ${item.item}`}</p>{" "}
-                    <p className="font-bold text-secondary-500">{`🎲 ${item.probability}`}</p>
+                    <p className="font-bold text-text-100">{`📦 ${item.item}`}</p>{" "}
+                    <p className="font-bold text-text-900">{`🎲 ${t(
+                      "probabilityLabel"
+                    )}: ${item.probability}`}</p>
                   </div>
                 </ListItem>
               ))}
