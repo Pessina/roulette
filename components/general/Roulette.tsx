@@ -44,7 +44,7 @@ const Roulette: React.FC<RouletteProps> = ({
   return options.length > 0 ? (
     <div id="roulette" className={`${className}`}>
       <Wheel
-        spinDuration={2}
+        spinDuration={1.5}
         prizeNumber={prizeNumber}
         mustStartSpinning={mustStartSpinning}
         onStopSpinning={onSpinComplete}
@@ -59,6 +59,7 @@ const Roulette: React.FC<RouletteProps> = ({
         fontWeight="bold"
         fontStyle="normal"
         textDistance={60}
+        disableInitialAnimation
       />
     </div>
   ) : (

@@ -12,15 +12,15 @@
   },
   "homePage": {
     "spinButton": "Sortear",
-    "noOptions": "Ainda não foram adicionados produtos"
+    "noOptions": "Ainda não foram adicionados prêmios"
   },
   "products": {
-    "addItem": "Adicionar um produto"
+    "addItem": "Adicionar um prêmio"
   },
   "header": {
     "logoAlt": "Logo do aplicativo",
     "roulette": "Roleta",
-    "products": "Produtos",
+    "products": "Prêmios",
     "logout": "Sair"
   },
   "congratulations": {
