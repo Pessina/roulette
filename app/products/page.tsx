@@ -1,9 +1,12 @@
 "use client";
-import React, { FC, useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import React, { FC, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { v4 as uuid } from "uuid";
+import * as yup from "yup";
 
 import { addItem, getItems, removeItem } from "@/api/item";
 import { Item } from "@/api/types";
@@ -11,8 +14,12 @@ import Input from "@/components/general/Input";
 import ListItem from "@/components/general/ListItem";
 import { Loader } from "@/components/general/Loader";
 
+interface FormInputs {
+  itemName: string;
+  itemProbability: string;
+}
+
 const Products: FC = () => {
-  const [input, setInput] = useState("");
   const [isLoading, setLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
   const { t } = useTranslation("", { keyPrefix: "products" });
@@ -27,8 +34,37 @@ const Products: FC = () => {
     fetchItems();
   }, []);
 
-  const onChangeOptions = (options: Item[]) => {
-    setItems(options);
+  const schema = useMemo(
+    () =>
+      yup.object().shape({
+        itemName: yup.string().required(t("itemNameRequired") ?? ""),
+        itemProbability: yup
+          .number()
+          .typeError(t("positiveProbability") ?? "")
+          .positive(t("positiveProbability") ?? "")
+          .required(t("probabilityRequired") ?? ""),
+      }),
+    [t]
+  );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormInputs>({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (data: FormInputs) => {
+    const newItem = {
+      id: uuid(),
+      item: data.itemName,
+      probability: Number(data.itemProbability),
+    };
+    setItems([...items, newItem]);
+    await addItem(newItem);
+    reset();
   };
 
   return (
@@ -39,7 +75,7 @@ const Products: FC = () => {
         ) : (
           <form
             className="flex flex-col gap-4"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <ul className="flex flex-col gap-2 text-text-500 text-sm overflow-scroll py-4 rounded-md bg-background-500">
               {items.map((item, index) => (
@@ -49,7 +85,7 @@ const Products: FC = () => {
                       type="button"
                       onClick={() => {
                         removeItem(item.id);
-                        onChangeOptions(items.filter((i) => i.id !== item.id));
+                        setItems(items.filter((i) => i.id !== item.id));
                       }}
                       className="text-error-500 focus:outline-none"
                     >
@@ -58,19 +94,13 @@ const Products: FC = () => {
                   }
                   key={index}
                 >
-                  {item.item}
+                  {`${item.item} - ${item.probability}`}
                 </ListItem>
               ))}
               <ListItem
                 leftIcon={
                   <button
-                    onClick={async () => {
-                      if (input === "") return;
-
-                      setInput("");
-                      addItem(input);
-                      onChangeOptions([...items, { id: uuid(), item: input }]);
-                    }}
+                    type="submit"
                     className="text-primary-500 focus:outline-none"
                   >
                     <AiOutlinePlus className="h-4 w-4" />
@@ -78,11 +108,18 @@ const Products: FC = () => {
                 }
               >
                 <Input
+                  {...register("itemName")}
                   theme="none"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  error={errors.itemName?.message}
                   className="text-text-500 bg-background-700"
                   placeholder={t("addItem") ?? ""}
+                />
+                <Input
+                  {...register("itemProbability")}
+                  theme="none"
+                  error={errors.itemProbability?.message}
+                  className="text-text-500 bg-background-700"
+                  placeholder={t("addProbability") ?? ""}
                 />
               </ListItem>
             </ul>

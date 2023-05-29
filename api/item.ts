@@ -13,10 +13,10 @@ import {
 import { firestore } from "../firebase";
 import { Item } from "./types";
 
-export const addItem = async (item: string) => {
+export const addItem = async (item: Item) => {
   try {
     const docRef = await addDoc(collection(firestore, "items"), {
-      item,
+      ...item,
       createdAt: serverTimestamp(),
     });
     const doc = await getDoc(docRef);
@@ -37,7 +37,11 @@ export const getItems = async () => {
     const querySnapshot = await getDocs(q);
     const items: Item[] = [];
     querySnapshot.forEach((doc) => {
-      items.push({ id: doc.id, item: doc.data().item });
+      items.push({
+        id: doc.id,
+        item: doc.data().item,
+        probability: doc.data().probability,
+      });
     });
     return items;
   } catch (e) {

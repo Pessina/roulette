@@ -9,6 +9,7 @@ import Button from "@/components/general/Button";
 import { Loader } from "@/components/general/Loader";
 import Roulette from "@/components/general/Roulette";
 import Congratulations from "@/components/home/Congratulations";
+import { weightedRandom } from "@/utils/weightedRandom";
 
 const Home = () => {
   const { t } = useTranslation("", { keyPrefix: "homePage" });
@@ -24,7 +25,7 @@ const Home = () => {
       const items = await getItems();
       setIsLoading(false);
       setItems(items);
-      prizeNumber.current = Math.floor(Math.random() * items.length);
+      prizeNumber.current = weightedRandom(items);
     };
 
     fetchItems();
@@ -32,8 +33,8 @@ const Home = () => {
 
   const onSpin = useCallback(() => {
     setMustStartSpinning(true);
-    prizeNumber.current = Math.floor(Math.random() * items.length);
-  }, [items.length]);
+    prizeNumber.current = weightedRandom(items);
+  }, [items]);
 
   const onSpinComplete = useCallback(() => {
     setMustStartSpinning(false);

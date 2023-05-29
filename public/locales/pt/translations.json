@@ -15,7 +15,11 @@
     "noOptions": "Ainda não foram adicionados prêmios"
   },
   "products": {
-    "addItem": "Adicionar um prêmio"
+    "addItem": "Adicionar item",
+    "addProbability": "Adicionar probabilidade",
+    "itemNameRequired": "O nome do item é obrigatório",
+    "positiveProbability": "A probabilidade deve ser um número positivo",
+    "probabilityRequired": "A probabilidade do item é obrigatória"
   },
   "header": {
     "logoAlt": "Logo do aplicativo",
