@@ -46,10 +46,6 @@ const Roulette: React.FC<RouletteProps> = ({
       id="roulette"
       className={`${className} relative w-[min(70vw,70vh)] h-[min(70vw,70vh)]`}
     >
-      <span
-        className="absolute border-background-900 border-2 h-[98%] w-[98%] m-auto rounded-full
-                  top-0 bottom-0 left-0 right-0 z-10"
-      />
       <Wheel
         spinDuration={1.5}
         prizeNumber={prizeNumber}
@@ -70,7 +66,7 @@ const Roulette: React.FC<RouletteProps> = ({
         pointerProps={{
           src: "/pointer-bright.png",
           style: {
-            zIndex: 100,
+            zIndex: 7,
           },
         }}
       />

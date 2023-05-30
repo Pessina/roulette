@@ -37,3 +37,19 @@ body {
   max-height: 100%;
   box-sizing: border-box;
 }
+
+#roulette > div::before {
+  content: "";
+  position: absolute;
+  border-color: #040404;
+  border-width: 2px;
+  height: 98.3%;
+  width: 98.3%;
+  margin: auto;
+  border-radius: 50%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+}
