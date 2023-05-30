@@ -42,9 +42,9 @@ body {
   content: "";
   position: absolute;
   border-color: #040404;
-  border-width: 2px;
-  height: 98.3%;
-  width: 98.3%;
+  border-width: 0.5vw;
+  height: 98.6%;
+  width: 98.6%;
   margin: auto;
   border-radius: 50%;
   top: 0;
