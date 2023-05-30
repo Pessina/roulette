@@ -42,7 +42,10 @@ const Roulette: React.FC<RouletteProps> = ({
   }));
 
   return options.length > 0 ? (
-    <div id="roulette" className={`${className}`}>
+    <div
+      id="roulette"
+      className={`${className} relative w-[min(70vw,70vh)] h-[min(70vw,70vh)]`}
+    >
       <Wheel
         spinDuration={1.5}
         prizeNumber={prizeNumber}
@@ -62,6 +65,9 @@ const Roulette: React.FC<RouletteProps> = ({
         disableInitialAnimation
         pointerProps={{
           src: "/pointer-bright.png",
+          style: {
+            zIndex: 7,
+          },
         }}
       />
     </div>
