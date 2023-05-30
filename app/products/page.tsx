@@ -1,17 +1,28 @@
 "use client";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BiPencil, BiTrash } from "react-icons/bi";
 import { v4 as uuid } from "uuid";
 
 import { addItem, getItems, removeItem, updateItem } from "@/api/item";
 import { Item } from "@/api/types";
-import ListItem from "@/components/general/ListItem";
 import { Loader } from "@/components/general/Loader";
 import {
   EditableListItem,
   FormInputs,
 } from "@/components/products/EditableListItem";
+import { ListItem } from "@/components/products/ListItem";
+
+const createNewItem = (data: FormInputs) => ({
+  id: uuid(),
+  item: data.itemName,
+  probability: Number(data.itemProbability),
+});
+
+const updateExistingItem = (data: FormInputs, itemToEdit: Item) => ({
+  ...itemToEdit,
+  item: data.itemName,
+  probability: Number(data.itemProbability),
+});
 
 const Products: FC = () => {
   const [isLoading, setLoading] = useState(true);
@@ -21,21 +32,16 @@ const Products: FC = () => {
 
   useEffect(() => {
     const fetchItems = async () => {
-      const items = await getItems();
+      const fetchedItems = await getItems();
       setLoading(false);
-      setItems(items);
+      setItems(fetchedItems);
     };
-
     fetchItems();
   }, []);
 
   const handleSubmitCreate = useCallback(
     async (data: FormInputs) => {
-      const newItem = {
-        id: uuid(),
-        item: data.itemName,
-        probability: Number(data.itemProbability),
-      };
+      const newItem = createNewItem(data);
       setItems([...items, newItem]);
       await addItem(newItem);
     },
@@ -45,11 +51,7 @@ const Products: FC = () => {
   const handleEditSubmit = useCallback(
     async (data: FormInputs) => {
       if (itemToEdit) {
-        const updatedItem = {
-          ...itemToEdit,
-          item: data.itemName,
-          probability: Number(data.itemProbability),
-        };
+        const updatedItem = updateExistingItem(data, itemToEdit);
         setItems(
           items.map((item) => (item.id === itemToEdit.id ? updatedItem : item))
         );
@@ -66,57 +68,33 @@ const Products: FC = () => {
         {isLoading ? (
           <Loader className="grow text-primary-500" />
         ) : (
-          <div className="flex flex-col gap-4">
-            <ul className="flex flex-col gap-2 text-text-500 text-sm overflow-scroll py-4 rounded-md bg-background-500">
-              {items.map((item, index) =>
-                item.id === itemToEdit?.id ? (
-                  <EditableListItem
-                    key={index}
-                    item={item}
-                    onSubmit={handleEditSubmit}
-                  />
-                ) : (
-                  <ListItem
-                    leftIcon={
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setItemToEdit(item);
-                        }}
-                        className="text-warning-500 focus:outline-none"
-                      >
-                        <BiPencil className="h-4 w-4" />
-                      </button>
-                    }
-                    rightIcon={
-                      <button
-                        type="button"
-                        onClick={() => {
-                          removeItem(item.id);
-                          setItems(items.filter((i) => i.id !== item.id));
-                        }}
-                        className="text-error-500 focus:outline-none"
-                      >
-                        <BiTrash className="h-4 w-4" />
-                      </button>
-                    }
-                    key={index}
-                  >
-                    <div className="flex flex-col gap-2">
-                      <p className="font-bold text-text-100">{`📦 ${item.item}`}</p>{" "}
-                      <p className="font-bold text-text-900">
-                        {`🎲 ${t("probabilityLabel")}: ${item.probability}`}
-                      </p>
-                    </div>
-                  </ListItem>
-                )
-              )}
-              <EditableListItem
-                item={{ id: uuid(), item: "", probability: 0 }}
-                onSubmit={handleSubmitCreate}
-              />
-            </ul>
-          </div>
+          <ul className="flex flex-col gap-2 text-text-500 text-sm overflow-scroll py-4 rounded-md bg-background-500">
+            {items.map((item, index) =>
+              item.id === itemToEdit?.id ? (
+                <EditableListItem
+                  type="edit"
+                  key={index}
+                  item={item}
+                  onSubmit={handleEditSubmit}
+                />
+              ) : (
+                <ListItem
+                  key={item.id}
+                  item={item}
+                  onEdit={() => setItemToEdit(item)}
+                  onDelete={async () => {
+                    setItems(items.filter((i) => i.id !== item.id));
+                    await removeItem(item.id);
+                  }}
+                />
+              )
+            )}
+            <EditableListItem
+              type="create"
+              item={{ id: uuid(), item: "", probability: 0 }}
+              onSubmit={handleSubmitCreate}
+            />
+          </ul>
         )}
       </div>
     </main>

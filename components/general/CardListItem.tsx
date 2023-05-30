@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from "react";
 
 import Card from "./Card";
 
-type ListItemProps = {
+type CardListItemProps = {
   className?: string;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
@@ -10,7 +10,7 @@ type ListItemProps = {
   onClick?: () => void;
 };
 
-const ListItem: FC<ListItemProps> = ({
+export const CardListItem: FC<CardListItemProps> = ({
   className = "",
   leftIcon,
   rightIcon,
@@ -28,5 +28,3 @@ const ListItem: FC<ListItemProps> = ({
     </Card>
   );
 };
-
-export default ListItem;

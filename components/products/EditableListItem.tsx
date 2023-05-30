@@ -2,12 +2,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { AiOutlineCheck } from "react-icons/ai";
+import { AiOutlineCheck, AiOutlinePlus } from "react-icons/ai";
 import * as yup from "yup";
 
 import { Item } from "@/api/types";
 import Input from "@/components/general/Input";
-import ListItem from "@/components/general/ListItem";
+
+import { CardListItem } from "../general/CardListItem";
 
 export type FormInputs = {
   itemName: string;
@@ -17,11 +18,13 @@ export type FormInputs = {
 export type EditableListItemProps = {
   item: Item;
   onSubmit: (data: FormInputs) => void;
+  type: "create" | "edit";
 };
 
 export const EditableListItem: React.FC<EditableListItemProps> = ({
   item,
   onSubmit,
+  type,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "products" });
 
@@ -48,7 +51,7 @@ export const EditableListItem: React.FC<EditableListItemProps> = ({
     resolver: yupResolver(schema),
     defaultValues: {
       itemName: item.item,
-      itemProbability: String(item.probability),
+      itemProbability: !!item.probability ? String(item.probability) : "",
     },
   });
 
@@ -63,10 +66,14 @@ export const EditableListItem: React.FC<EditableListItemProps> = ({
         });
       })}
     >
-      <ListItem
+      <CardListItem
         leftIcon={
           <button type="submit" className="text-primary-500 focus:outline-none">
-            <AiOutlineCheck className="h-4 w-4" />
+            {type === "create" ? (
+              <AiOutlinePlus className="h-4 w-4" />
+            ) : (
+              <AiOutlineCheck className="h-4 w-4" />
+            )}
           </button>
         }
       >
@@ -89,7 +96,7 @@ export const EditableListItem: React.FC<EditableListItemProps> = ({
             placeholder={t("addProbability") ?? ""}
           />
         </div>
-      </ListItem>
+      </CardListItem>
     </form>
   );
 };

@@ -46,15 +46,18 @@ const Home = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.code === "Enter" || e.code === "Space") && canSpin) {
-        setIsModalOpen(false);
-        onSpin();
+        if (isModalOpen) {
+          setIsModalOpen(false);
+        } else {
+          onSpin();
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [items, onSpin, mustStartSpinning, canSpin]);
+  }, [items, onSpin, mustStartSpinning, canSpin, isModalOpen]);
 
   return (
     <>
