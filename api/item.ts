@@ -8,6 +8,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 
 import { firestore } from "../firebase";
@@ -56,5 +57,16 @@ export const removeItem = async (id: string) => {
     console.log("Document successfully deleted!");
   } catch (e) {
     console.error("Error removing document: ", e);
+  }
+};
+
+export const updateItem = async (id: string, updatedItem: Item) => {
+  try {
+    const itemRef = doc(firestore, "items", id);
+
+    await updateDoc(itemRef, updatedItem);
+    console.log("Document successfully updated!");
+  } catch (e) {
+    console.error("Error updating document: ", e);
   }
 };
