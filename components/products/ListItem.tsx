@@ -29,7 +29,7 @@ export const ListItem: FC<ListItemProps> = ({ item, onEdit, onDelete }) => {
         <button
           type="button"
           onClick={() => onDelete(item)}
-          className="text-secondary-500 focus:outline-none"
+          className="text-error-500 focus:outline-none"
         >
           <BiTrash className="h-4 w-4" />
         </button>

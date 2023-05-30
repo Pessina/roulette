@@ -10,6 +10,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 import { firestore } from "../firebase";
 import { Item } from "./types";
@@ -23,12 +24,13 @@ export const addItem = async (item: Item) => {
     const doc = await getDoc(docRef);
 
     if (doc.exists()) {
+      toast.success("Document successfully created!");
       return { id: docRef.id, ...doc.data() };
     } else {
       throw new Error("Document does not exist");
     }
   } catch (e) {
-    console.error("Error adding document: ", e);
+    toast.error("Error adding document:");
   }
 };
 
@@ -46,7 +48,7 @@ export const getItems = async () => {
     });
     return items;
   } catch (e) {
-    console.error("Error getting documents: ", e);
+    toast.error("Error getting documents:");
     return [];
   }
 };
@@ -54,9 +56,9 @@ export const getItems = async () => {
 export const removeItem = async (id: string) => {
   try {
     await deleteDoc(doc(firestore, "items", id));
-    console.log("Document successfully deleted!");
+    toast.success("Document successfully deleted!");
   } catch (e) {
-    console.error("Error removing document: ", e);
+    toast.error("Error removing document");
   }
 };
 
@@ -65,8 +67,8 @@ export const updateItem = async (id: string, updatedItem: Item) => {
     const itemRef = doc(firestore, "items", id);
 
     await updateDoc(itemRef, updatedItem);
-    console.log("Document successfully updated!");
+    toast.success("Document successfully updated!");
   } catch (e) {
-    console.error("Error updating document: ", e);
+    toast.error("Error updating document");
   }
 };
