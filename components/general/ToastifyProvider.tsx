@@ -12,7 +12,7 @@ const ToastifyProvider: React.FC<TranslationProviderProps> = ({ children }) => {
   return (
     <>
       {children}
-      <ToastContainer />
+      <ToastContainer autoClose={5000} hideProgressBar />
     </>
   );
 };

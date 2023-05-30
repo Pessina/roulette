@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 
 import { AuthProvider } from "@/components/general/AuthProvider";
-import ToastifyProvider from "@/components/general/ToastifyProvider";
 import TranslationProvider from "@/components/general/TranslationProvider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,9 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={`${inter.className} h-full flex flex-col`}>
         <AuthProvider>
           <TranslationProvider>
-            <ToastifyProvider>
-              <div className="grow">{children}</div>
-            </ToastifyProvider>
+            <div className="grow">{children}</div>
           </TranslationProvider>
         </AuthProvider>
       </body>
