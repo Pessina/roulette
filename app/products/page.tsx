@@ -1,6 +1,5 @@
 "use client";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
 
 import { addItem, getItems, removeItem, updateItem } from "@/api/item";
@@ -10,7 +9,7 @@ import {
   FormInputs,
 } from "@/app/products/components/EditableListItem";
 import { ListItem } from "@/app/products/components/ListItem";
-import { Loader } from "@/components/general/Loader";
+import { Loader } from "@/components/Loader";
 
 const createNewItem = (data: FormInputs) => ({
   id: uuid(),
@@ -28,24 +27,28 @@ const Products: FC = () => {
   const [isLoading, setLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
   const [itemToEdit, setItemToEdit] = useState<Item | null>(null);
-  const { t } = useTranslation("", { keyPrefix: "products" });
+  const [loadingItems, setLoadingItems] = useState<string[]>([]);
+
+  const fetchItems = useCallback(async () => {
+    const fetchedItems = await getItems();
+    setLoading(false);
+    setItems(fetchedItems);
+    setLoadingItems([]);
+  }, []);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      const fetchedItems = await getItems();
-      setLoading(false);
-      setItems(fetchedItems);
-    };
     fetchItems();
-  }, []);
+  }, [fetchItems]);
 
   const handleSubmitCreate = useCallback(
     async (data: FormInputs) => {
       const newItem = createNewItem(data);
       setItems([...items, newItem]);
+      setLoadingItems([...loadingItems, newItem.id]);
       await addItem(newItem);
+      fetchItems();
     },
-    [items]
+    [fetchItems, items, loadingItems]
   );
 
   const handleEditSubmit = useCallback(
@@ -55,11 +58,13 @@ const Products: FC = () => {
         setItems(
           items.map((item) => (item.id === itemToEdit.id ? updatedItem : item))
         );
+        setLoadingItems([...loadingItems, itemToEdit.id]);
         setItemToEdit(null);
         await updateItem(itemToEdit.id, updatedItem);
+        fetchItems();
       }
     },
-    [itemToEdit, items]
+    [fetchItems, itemToEdit, items, loadingItems]
   );
 
   return (
@@ -75,16 +80,19 @@ const Products: FC = () => {
                   type="edit"
                   key={index}
                   item={item}
+                  isLoading={loadingItems.includes(item.id)}
                   onSubmit={handleEditSubmit}
                 />
               ) : (
                 <ListItem
                   key={item.id}
                   item={item}
+                  isLoading={loadingItems.includes(item.id)}
                   onEdit={() => setItemToEdit(item)}
                   onDelete={async () => {
-                    setItems(items.filter((i) => i.id !== item.id));
+                    setLoadingItems([...loadingItems, item.id]);
                     await removeItem(item.id);
+                    fetchItems();
                   }}
                 />
               )
@@ -93,6 +101,7 @@ const Products: FC = () => {
               type="create"
               item={{ id: uuid(), item: "", probability: 0 }}
               onSubmit={handleSubmitCreate}
+              isLoading={false}
             />
           </ul>
         )}

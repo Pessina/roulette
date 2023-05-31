@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { AiOutlineCheck, AiOutlinePlus } from "react-icons/ai";
+import { FaSpinner } from "react-icons/fa";
 import * as yup from "yup";
 
 import { Item } from "@/api/types";
@@ -19,12 +20,14 @@ export type EditableListItemProps = {
   item: Item;
   onSubmit: (data: FormInputs) => void;
   type: "create" | "edit";
+  isLoading: boolean;
 };
 
 export const EditableListItem: React.FC<EditableListItemProps> = ({
   item,
   onSubmit,
   type,
+  isLoading,
 }) => {
   const { t } = useTranslation("", { keyPrefix: "products" });
 
@@ -68,13 +71,20 @@ export const EditableListItem: React.FC<EditableListItemProps> = ({
     >
       <CardListItem
         leftIcon={
-          <button type="submit" className="text-primary-500 focus:outline-none">
-            {type === "create" ? (
-              <AiOutlinePlus className="h-4 w-4" />
-            ) : (
-              <AiOutlineCheck className="h-4 w-4" />
-            )}
-          </button>
+          isLoading ? (
+            <FaSpinner className="animate-spin h-4 w-4 text-primary-500" />
+          ) : (
+            <button
+              type="submit"
+              className="text-primary-500 focus:outline-none"
+            >
+              {type === "create" ? (
+                <AiOutlinePlus className="h-4 w-4" />
+              ) : (
+                <AiOutlineCheck className="h-4 w-4" />
+              )}
+            </button>
+          )
         }
       >
         <div className="flex gap-4">
