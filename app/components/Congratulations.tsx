@@ -3,7 +3,7 @@ import Confetti from "react-confetti";
 import { useTranslation } from "react-i18next";
 
 import { Item } from "@/api/types";
-import Modal from "@/components/general/Modal";
+import Modal from "@/components/Modal";
 
 interface CongratulationsProps {
   isModalOpen: boolean;

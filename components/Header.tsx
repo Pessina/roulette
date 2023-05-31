@@ -6,8 +6,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiLogOut } from "react-icons/fi";
 
-import { auth } from "../../firebase";
-import Button from "../general/Button";
+import { auth } from "../firebase";
+import Button from "./Button";
 
 type HeaderProps = {
   className?: string;

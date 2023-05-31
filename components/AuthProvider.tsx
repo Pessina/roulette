@@ -1,10 +1,16 @@
 "use client";
 import { onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import React, { createContext, ReactNode, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, {
+  createContext,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-import { auth } from "../../firebase";
-import Header from "../home/Header";
+import { auth } from "../firebase";
+import Header from "./Header";
 import { Loader } from "./Loader";
 
 interface AuthContextInterface {
@@ -22,18 +28,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsLoadingUser(false);
       setUser(user);
       if (!user) {
-        router.push("/login");
+        router.push("/auth/login");
       }
     });
 
     return () => unsubscribe();
   }, [router]);
+
+  const hasHeader = useMemo(() => !pathname.includes("/auth"), [pathname]);
 
   return (
     <AuthContext.Provider value={{ user, isLoadingUser }}>
@@ -41,7 +50,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         <Loader className="h-full w-full flex items-center justify-center" />
       ) : (
         <>
-          {user && <Header className="shrink-0 sticky top-0" />}
+          {hasHeader && <Header className="shrink-0 sticky top-0" />}
           {children}
         </>
       )}

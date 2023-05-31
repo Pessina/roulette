@@ -13,11 +13,11 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 
-import Button from "@/components/general/Button";
-import Card from "@/components/general/Card";
-import Input from "@/components/general/Input";
+import Button from "@/components/Button";
+import Card from "@/components/Card";
+import Input from "@/components/Input";
 
-import { auth } from "../../firebase";
+import { auth } from "../../../firebase";
 
 type LoginForm = {
   email: string;

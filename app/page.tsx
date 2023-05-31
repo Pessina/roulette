@@ -5,10 +5,10 @@ import { FaSpinner } from "react-icons/fa";
 
 import { getItems } from "@/api/item";
 import { Item } from "@/api/types";
-import Button from "@/components/general/Button";
-import { Loader } from "@/components/general/Loader";
-import Roulette from "@/components/general/Roulette";
-import Congratulations from "@/components/home/Congratulations";
+import Congratulations from "@/app/components/Congratulations";
+import Button from "@/components/Button";
+import { Loader } from "@/components/Loader";
+import Roulette from "@/components/Roulette";
 import { weightedRandom } from "@/utils/weightedRandom";
 
 const Home = () => {
