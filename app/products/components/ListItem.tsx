@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { BiPencil, BiTrash } from "react-icons/bi";
 
 import { Item } from "@/api/types";
-import { CardListItem } from "@/components/general/CardListItem";
+import { CardListItem } from "@/components/CardListItem";
 
 type ListItemProps = {
   item: Item;

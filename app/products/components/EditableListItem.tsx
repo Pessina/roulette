@@ -6,9 +6,9 @@ import { AiOutlineCheck, AiOutlinePlus } from "react-icons/ai";
 import * as yup from "yup";
 
 import { Item } from "@/api/types";
-import Input from "@/components/general/Input";
+import Input from "@/components/Input";
 
-import { CardListItem } from "../general/CardListItem";
+import { CardListItem } from "../../../components/CardListItem";
 
 export type FormInputs = {
   itemName: string;

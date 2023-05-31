@@ -3,13 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBKKS5SyNuHYWqF3x3iTALQ0qvppLLVbn0",
-  authDomain: "roleta-escalada.firebaseapp.com",
-  projectId: "roleta-escalada",
-  storageBucket: "roleta-escalada.appspot.com",
-  messagingSenderId: "695104084228",
-  appId: "1:695104084228:web:99f94d5e804693ec8f1851",
-  measurementId: "G-ETZL1T3XJR",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 export const app = initializeApp(firebaseConfig);

@@ -5,12 +5,12 @@ import { v4 as uuid } from "uuid";
 
 import { addItem, getItems, removeItem, updateItem } from "@/api/item";
 import { Item } from "@/api/types";
-import { Loader } from "@/components/general/Loader";
 import {
   EditableListItem,
   FormInputs,
-} from "@/components/products/EditableListItem";
-import { ListItem } from "@/components/products/ListItem";
+} from "@/app/products/components/EditableListItem";
+import { ListItem } from "@/app/products/components/ListItem";
+import { Loader } from "@/components/general/Loader";
 
 const createNewItem = (data: FormInputs) => ({
   id: uuid(),
