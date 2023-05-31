@@ -27,28 +27,34 @@ const Products: FC = () => {
   const [isLoading, setLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
   const [itemToEdit, setItemToEdit] = useState<Item | null>(null);
-  const [loadingItems, setLoadingItems] = useState<string[]>([]);
+  const [loadingItems, setLoadingItems] = useState<Map<string, boolean>>(
+    new Map()
+  );
 
   const fetchItems = useCallback(async () => {
     const fetchedItems = await getItems();
     setLoading(false);
     setItems(fetchedItems);
-    setLoadingItems([]);
+    setLoadingItems(new Map());
   }, []);
 
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
 
+  const handleLoadingStatus = useCallback((id: string, status: boolean) => {
+    setLoadingItems((prevState) => new Map(prevState).set(id, status));
+  }, []);
+
   const handleSubmitCreate = useCallback(
     async (data: FormInputs) => {
       const newItem = createNewItem(data);
       setItems([...items, newItem]);
-      setLoadingItems([...loadingItems, newItem.id]);
+      handleLoadingStatus(newItem.id, true);
       await addItem(newItem);
       fetchItems();
     },
-    [fetchItems, items, loadingItems]
+    [fetchItems, handleLoadingStatus, items]
   );
 
   const handleEditSubmit = useCallback(
@@ -58,13 +64,22 @@ const Products: FC = () => {
         setItems(
           items.map((item) => (item.id === itemToEdit.id ? updatedItem : item))
         );
-        setLoadingItems([...loadingItems, itemToEdit.id]);
+        handleLoadingStatus(itemToEdit.id, true);
         setItemToEdit(null);
         await updateItem(itemToEdit.id, updatedItem);
         fetchItems();
       }
     },
-    [fetchItems, itemToEdit, items, loadingItems]
+    [fetchItems, handleLoadingStatus, itemToEdit, items]
+  );
+
+  const handleDeleteItem = useCallback(
+    async (item: Item) => {
+      handleLoadingStatus(item.id, true);
+      await removeItem(item.id);
+      fetchItems();
+    },
+    [fetchItems, handleLoadingStatus]
   );
 
   return (
@@ -80,20 +95,16 @@ const Products: FC = () => {
                   type="edit"
                   key={index}
                   item={item}
-                  isLoading={loadingItems.includes(item.id)}
+                  isLoading={!!loadingItems.get(item.id)}
                   onSubmit={handleEditSubmit}
                 />
               ) : (
                 <ListItem
                   key={item.id}
                   item={item}
-                  isLoading={loadingItems.includes(item.id)}
+                  isLoading={!!loadingItems.get(item.id)}
                   onEdit={() => setItemToEdit(item)}
-                  onDelete={async () => {
-                    setLoadingItems([...loadingItems, item.id]);
-                    await removeItem(item.id);
-                    fetchItems();
-                  }}
+                  onDelete={handleDeleteItem}
                 />
               )
             )}
