@@ -25,6 +25,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
           <Image
+            unoptimized
             src="/logo.png"
             width={200}
             height={200}
