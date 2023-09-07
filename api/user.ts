@@ -1,9 +1,9 @@
 import {
   deleteUser,
-  EmailAuthProvider,
   reauthenticateWithCredential,
   signOut,
 } from "@firebase/auth";
+import { EmailAuthProvider } from "firebase/auth";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 
 import { auth, firestore } from "@/firebase";
@@ -55,32 +55,21 @@ export const deleteUserDataFromFirestore = async (
   }
 };
 
-const promptForCredentials = async () => {
-  const password = prompt("Please enter your password for verification:");
-  if (!password) {
-    throw new Error("Password not provided");
-  }
+export const deleteUserCascade = async (password: string) => {
   const user = auth.currentUser;
+
   if (!user || !user.email) {
-    throw new Error("No authenticated user");
+    throw new Error("USER_NOT_AUTHENTICATED");
   }
 
-  const credential = EmailAuthProvider.credential(user.email, password);
-  return credential;
-};
-
-export const deleteUserCascade = async (): Promise<Result<void>> => {
-  return withUser(async () => {
-    const user = auth.currentUser;
-    if (!user) {
-      throw new Error("USER_NOT_AUTHENTICATED");
-    }
-
-    const credential = await promptForCredentials();
+  try {
+    const credential = EmailAuthProvider.credential(user.email, password);
     await reauthenticateWithCredential(user, credential);
 
     await deleteUserDataFromFirestore(user.uid);
     await deleteUser(user);
     signOut(auth);
-  });
+  } catch (error) {
+    throw error;
+  }
 };

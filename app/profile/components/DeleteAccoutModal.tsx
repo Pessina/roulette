@@ -1,34 +1,59 @@
-import { useRouter } from "next/navigation";
-import React, { FC, useState } from "react";
+"use client";
+import { yupResolver } from "@hookform/resolvers/yup";
+import React, { FC, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FaExclamationCircle, FaTimes } from "react-icons/fa";
+import * as yup from "yup";
 
 import { deleteUserCascade } from "@/api/user";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
-import { routes } from "@/constants/routes";
 
 type DeleteAccountModalProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
+type DeleteForm = {
+  password: string;
+};
+
 const DeleteAccountModal: FC<DeleteAccountModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const router = useRouter();
   const { t } = useTranslation("", { keyPrefix: "deleteAccountModal" });
-  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const confirmDeleteAccount = async () => {
+  const schema = yup.object().shape({
+    password: yup.string().required(t("passwordRequired")),
+  });
+
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<DeleteForm>({
+    resolver: yupResolver(schema),
+  });
+
+  useEffect(() => {
+    reset();
+    setErrorMessage("");
+  }, [reset, isOpen]);
+
+  const confirmDeleteAccount = async (data: DeleteForm) => {
     try {
-      await deleteUserCascade();
-      onClose();
-      router.push(routes.LOGIN);
+      setIsLoading(true);
+      await deleteUserCascade(data.password);
+      setIsLoading(false);
     } catch (error) {
-      console.error("Failed to delete account:", error);
+      setIsLoading(false);
+      setErrorMessage(t("deletionFailed"));
     }
   };
 
@@ -45,20 +70,27 @@ const DeleteAccountModal: FC<DeleteAccountModalProps> = ({
           </button>
         </div>
         <p className="mb-4 text-text-300">{t("warningDescription")}</p>
-        <Input
-          type="password"
-          label={t("passwordLabel")}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className="flex gap-2 justify-end mt-4">
-          <Button theme="secondary" onClick={onClose}>
-            {t("cancelButton")}
-          </Button>
-          <Button theme="danger" onClick={confirmDeleteAccount}>
-            {t("confirmButton")}
-          </Button>
-        </div>
+        <form onSubmit={handleSubmit(confirmDeleteAccount)}>
+          <Input
+            type="password"
+            label={t("passwordLabel")}
+            error={errors.password?.message || errorMessage}
+            {...register("password")}
+          />
+          <div className="flex gap-2 justify-end mt-4">
+            <Button theme="secondary" onClick={onClose}>
+              {t("cancelButton")}
+            </Button>
+            <Button
+              theme="danger"
+              type="submit"
+              disabled={isLoading}
+              loading={isLoading}
+            >
+              {t("confirmButton")}
+            </Button>
+          </div>
+        </form>
       </div>
     </Modal>
   );

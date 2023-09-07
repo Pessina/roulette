@@ -55,10 +55,12 @@
     "messageSuffix": "🎉"
   },
   "deleteAccountModal": {
-    "warningTitle": "Tem certeza de que deseja excluir sua conta?",
-    "warningDescription": "A exclusão de sua conta é irreversível e resultará na perda de todos os seus dados.",
+    "warningTitle": "Excluir Conta",
+    "warningDescription": "Tem certeza de que deseja excluir sua conta? Essa ação não pode ser desfeita.",
+    "passwordLabel": "Confirmar Senha",
     "cancelButton": "Cancelar",
     "confirmButton": "Confirmar",
-    "passwordLabel": "Senha"
+    "deletionFailed": "Falha ao excluir a conta. Tente novamente.",
+    "passwordRequired": "Senha obrigatória"
   }
 }

@@ -60,7 +60,6 @@ const LoginPage: React.FC = () => {
       setInputsError("");
       router.push("/");
     } catch (error) {
-      console.error(error);
       setInputsError(t("wrongCredentialsError") ?? "");
     } finally {
       setIsLoading(false);
