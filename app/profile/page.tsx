@@ -15,7 +15,7 @@ import Input from "@/components/Input";
 import { routes } from "@/constants/routes";
 import { AuthContext } from "@/providers/AuthProvider";
 
-import DeleteAccountModal from "./components/DeleteAccoutModal";
+import DeleteAccountModal from "./components/DeleteAccountModal";
 
 type ProfileForm = {
   companyName: string;

@@ -61,7 +61,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           <button
             type="button"
             onClick={removeImage}
-            className="absolute top-0 right-0 p-1 bg-error-500 text-white rounded-full"
+            className="absolute top-2 right-2 p-1 bg-error-500 text-white rounded-full"
           >
             <BiTrash className="h-4 w-4" />
           </button>
