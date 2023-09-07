@@ -13,7 +13,7 @@ import { CardListItem } from "../../../components/CardListItem";
 
 export type FormInputs = {
   itemName: string;
-  itemProbability: string;
+  itemProbability: number;
 };
 
 export type EditableListItemProps = {
@@ -54,7 +54,7 @@ export const EditableListItem: React.FC<EditableListItemProps> = ({
     resolver: yupResolver(schema),
     defaultValues: {
       itemName: item.item,
-      itemProbability: !!item.probability ? String(item.probability) : "",
+      itemProbability: !!item.probability ? item.probability : undefined,
     },
   });
 
@@ -65,7 +65,7 @@ export const EditableListItem: React.FC<EditableListItemProps> = ({
         setFocus("itemName");
         reset({
           itemName: "",
-          itemProbability: "",
+          itemProbability: undefined,
         });
       })}
     >

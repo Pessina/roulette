@@ -24,6 +24,16 @@
     "spinButton": "Sortear",
     "noOptions": "Ainda não foram adicionados prêmios"
   },
+  "profilePage": {
+    "companyNameRequired": "O nome da empresa é obrigatório",
+    "rouletteColorsRequired": "As cores da roleta são obrigatórias",
+    "profileSettings": "Configurações do Perfil",
+    "companyLogo": "Logotipo da Empresa",
+    "companyName": "Nome da Empresa",
+    "rouletteColors": "Cores da Roleta",
+    "saveChanges": "Salvar Alterações",
+    "deleteAccount": "Excluir Conta"
+  },
   "products": {
     "itemLabel": "Nome",
     "probabilityLabel": "Probabilidade",
@@ -37,6 +47,7 @@
     "logoAlt": "Logo do aplicativo",
     "roulette": "Roleta",
     "products": "Prêmios",
+    "profile": "Perfil",
     "logout": "Sair"
   },
   "congratulations": {

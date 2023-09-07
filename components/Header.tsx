@@ -52,6 +52,14 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
                 {t("products")}
               </Link>
             </li>
+            <li>
+              <Link
+                href={routes.PROFILE}
+                className="text-xl hover:text-primary-500 transition-colors duration-200"
+              >
+                {t("profile")}
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
