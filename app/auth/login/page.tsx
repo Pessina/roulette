@@ -92,7 +92,7 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-background-900">
       <Card className="bg-background-500 flex flex-col gap-4 w-[20%] p-4">
         <Image
-          src="/logo.png"
+          src="/assets/images/logo.png"
           alt="logo"
           width={200}
           height={200}
