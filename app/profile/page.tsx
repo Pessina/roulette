@@ -42,7 +42,6 @@ const ProfilePage: React.FC = () => {
     register,
     handleSubmit,
     control,
-    getValues,
     formState: { errors },
   } = useForm<ProfileForm>({
     resolver: yupResolver(schema),
@@ -64,11 +63,10 @@ const ProfilePage: React.FC = () => {
     fetchProfileData();
   }, [reset]);
 
-  const onSubmit = async (data: ProfileData) => {
+  const onSubmit = async (data: ProfileForm) => {
     setIsLoading(true);
-    const logo = getValues("fileInput");
     try {
-      const logoURL = logo ? await uploadLogo(logo) : {};
+      const logoURL = data.fileInput ? await uploadLogo(data.fileInput) : {};
       const baseData: ProfileData = {
         companyName: data.companyName,
         rouletteColors: data.rouletteColors,
