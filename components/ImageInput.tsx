@@ -1,17 +1,28 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiTrash, BiUpload } from "react-icons/bi";
 
 interface ImageInputProps {
   label: string;
-  onChange: (file: File | null) => void;
+  onChange: (file: File | undefined) => void;
+  previewUrl?: string;
 }
 
-const ImageInput: React.FC<ImageInputProps> = ({ label, onChange }) => {
-  const [preview, setPreview] = useState<string | null>(null);
+const ImageInput: React.FC<ImageInputProps> = ({
+  label,
+  onChange,
+  previewUrl,
+}) => {
+  const [preview, setPreview] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (previewUrl) {
+      setPreview(previewUrl);
+    }
+  }, [previewUrl]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] ?? null;
+    const file = e.target.files?.[0] ?? undefined;
 
     if (file) {
       const reader = new FileReader();
@@ -20,15 +31,15 @@ const ImageInput: React.FC<ImageInputProps> = ({ label, onChange }) => {
       };
       reader.readAsDataURL(file);
     } else {
-      setPreview(null);
+      setPreview(undefined);
     }
 
     onChange(file);
   };
 
   const removeImage = () => {
-    setPreview(null);
-    onChange(null);
+    setPreview(undefined);
+    onChange(undefined);
   };
 
   return (

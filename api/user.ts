@@ -62,14 +62,10 @@ export const deleteUserCascade = async (password: string) => {
     throw new Error("USER_NOT_AUTHENTICATED");
   }
 
-  try {
-    const credential = EmailAuthProvider.credential(user.email, password);
-    await reauthenticateWithCredential(user, credential);
+  const credential = EmailAuthProvider.credential(user.email, password);
+  await reauthenticateWithCredential(user, credential);
 
-    await deleteUserDataFromFirestore(user.uid);
-    await deleteUser(user);
-    signOut(auth);
-  } catch (error) {
-    throw error;
-  }
+  await deleteUserDataFromFirestore(user.uid);
+  await deleteUser(user);
+  signOut(auth);
 };

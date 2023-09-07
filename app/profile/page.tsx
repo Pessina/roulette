@@ -1,11 +1,17 @@
 "use client";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { deleteField } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 
+import {
+  getProfileData,
+  updateProfileData,
+  uploadCompanyLogo,
+} from "@/api/profile";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
 import ImageInput from "@/components/ImageInput";
@@ -24,9 +30,13 @@ const ProfilePage: React.FC = () => {
   const { t } = useTranslation("", { keyPrefix: "profilePage" });
   const { user, isLoadingUser } = useContext(AuthContext);
   const router = useRouter();
-
-  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
+  const [companyLogo, setCompanyLogo] = useState<File | undefined>(undefined);
+  const [companyLogoUrl, setCompanyLogoUrl] = useState<string | undefined>(
+    undefined
+  );
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const schema = yup.object().shape({
     companyName: yup.string().required(t("companyNameRequired")),
@@ -34,6 +44,7 @@ const ProfilePage: React.FC = () => {
   });
 
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -41,11 +52,47 @@ const ProfilePage: React.FC = () => {
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      setIsLoading(true);
+      const { data } = await getProfileData();
+      if (data) {
+        reset({
+          companyName: data.companyName,
+          rouletteColors: data.rouletteColors,
+        });
+        setCompanyLogoUrl(data.companyLogo);
+      }
+      setIsLoading(false);
+    };
+    fetchProfileData();
+  }, [reset]);
+
   const onSubmit = async (data: ProfileForm) => {
-    console.log(data, companyLogo);
+    setIsLoading(true);
+    try {
+      const logoURL = companyLogo ? await uploadCompanyLogo(companyLogo) : {};
+      const updateData = {
+        companyName: data.companyName,
+        rouletteColors: data.rouletteColors,
+        ...(logoURL.data
+          ? { companyLogo: logoURL.data }
+          : !companyLogo && companyLogoUrl
+          ? { companyLogo: deleteField() }
+          : {}),
+      };
+
+      const result = await updateProfileData(updateData);
+
+      if (result.error) throw new Error(result.error);
+    } catch (error) {
+      setError(t("genericErrorMessage"));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleLogoUpload = (file: File | null) => {
+  const handleLogoUpload = (file: File | undefined) => {
     if (file) {
       setCompanyLogo(file);
     }
@@ -53,7 +100,7 @@ const ProfilePage: React.FC = () => {
 
   if (!isLoadingUser && !user) {
     router.push(routes.LOGIN);
-    return null;
+    return undefined;
   }
 
   return (
@@ -61,7 +108,11 @@ const ProfilePage: React.FC = () => {
       <Card className="bg-background-500 flex flex-col gap-4 w-[40%] p-4">
         <h1 className="text-2xl mb-4 text-center">{t("profileSettings")}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <ImageInput label={t("companyLogo")} onChange={handleLogoUpload} />
+          <ImageInput
+            label={t("companyLogo")}
+            onChange={handleLogoUpload}
+            previewUrl={companyLogoUrl}
+          />
           <Input
             {...register("companyName")}
             type="text"
@@ -72,18 +123,23 @@ const ProfilePage: React.FC = () => {
             {...register("rouletteColors")}
             type="text"
             label={t("rouletteColors")}
-            error={errors.rouletteColors?.message}
+            error={errors.rouletteColors?.message || error}
           />
           <div className="flex gap-2 justify-between">
-            <Button type="submit" theme="primary">
-              {t("saveChanges")}
-            </Button>
             <Button
               type="button"
               theme="danger"
               onClick={() => setShowModal(true)}
             >
               {t("deleteAccount")}
+            </Button>
+            <Button
+              type="submit"
+              theme="primary"
+              disabled={isLoading}
+              loading={isLoading}
+            >
+              {t("saveChanges")}
             </Button>
           </div>
         </form>
