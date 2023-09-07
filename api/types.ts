@@ -3,3 +3,8 @@ export type Item = {
   item: string;
   probability: number;
 };
+
+export interface Result<T> {
+  data?: T;
+  error?: string;
+}

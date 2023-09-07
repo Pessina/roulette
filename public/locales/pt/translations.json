@@ -53,5 +53,12 @@
   "congratulations": {
     "messagePrefix": "Parabéns! Você ganhou o prêmio:",
     "messageSuffix": "🎉"
+  },
+  "deleteAccountModal": {
+    "warningTitle": "Tem certeza de que deseja excluir sua conta?",
+    "warningDescription": "A exclusão de sua conta é irreversível e resultará na perda de todos os seus dados.",
+    "cancelButton": "Cancelar",
+    "confirmButton": "Confirmar",
+    "passwordLabel": "Senha"
   }
 }

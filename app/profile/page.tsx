@@ -13,6 +13,8 @@ import Input from "@/components/Input";
 import { routes } from "@/constants/routes";
 import { AuthContext } from "@/providers/AuthProvider";
 
+import DeleteAccountModal from "./components/DeleteAccoutModal";
+
 type ProfileForm = {
   companyName: string;
   rouletteColors: string;
@@ -24,6 +26,7 @@ const ProfilePage: React.FC = () => {
   const router = useRouter();
 
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   const schema = yup.object().shape({
     companyName: yup.string().required(t("companyNameRequired")),
@@ -39,7 +42,6 @@ const ProfilePage: React.FC = () => {
   });
 
   const onSubmit = async (data: ProfileForm) => {
-    // Handle form submission here
     console.log(data, companyLogo);
   };
 
@@ -47,11 +49,6 @@ const ProfilePage: React.FC = () => {
     if (file) {
       setCompanyLogo(file);
     }
-  };
-
-  const handleDeleteAccount = () => {
-    // Handle account deletion here
-    router.push(routes.LOGIN); // Redirect to home or another page after deletion
   };
 
   if (!isLoadingUser && !user) {
@@ -81,12 +78,20 @@ const ProfilePage: React.FC = () => {
             <Button type="submit" theme="primary">
               {t("saveChanges")}
             </Button>
-            <Button type="button" theme="danger" onClick={handleDeleteAccount}>
+            <Button
+              type="button"
+              theme="danger"
+              onClick={() => setShowModal(true)}
+            >
               {t("deleteAccount")}
             </Button>
           </div>
         </form>
       </Card>
+      <DeleteAccountModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 };

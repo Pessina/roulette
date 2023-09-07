@@ -11,36 +11,9 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-import { auth, firestore } from "../firebase";
-import { Item } from "./types";
-
-interface Result<T> {
-  data?: T;
-  error?: string;
-}
-
-const getUserId = (): string => {
-  const user = auth.currentUser;
-  if (user) {
-    return user.uid;
-  }
-  throw new Error("USER_NOT_AUTHENTICATED");
-};
-
-const withUser = async <T>(
-  fn: (userId: string) => Promise<T>
-): Promise<Result<T>> => {
-  try {
-    const userId = getUserId();
-    const data = await fn(userId);
-    return { data };
-  } catch (e) {
-    if (e instanceof Error) {
-      return { error: e.message };
-    }
-    return { error: "UNKNOWN_ERROR" };
-  }
-};
+import { firestore } from "../firebase";
+import { Item, Result } from "./types";
+import { withUser } from "./user";
 
 export const addItem = async (item: Item): Promise<Result<Item>> => {
   return withUser(async (userId) => {
