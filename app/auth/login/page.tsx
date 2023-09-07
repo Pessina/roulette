@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -115,18 +116,24 @@ const LoginPage: React.FC = () => {
             className="w-full px-4 py-2 bg-background-700 text-text-100 rounded focus:ring-primary-500"
             error={errors.password?.message}
           />
+          {inputsError && <div className="text-red-500">{inputsError}</div>}
           <Button loading={isLoading} type="submit" theme="primary">
             {t("loginButton") ?? ""}
           </Button>
         </form>
-        <div className="text-center">
+        <div className="text-center flex flex-col gap-1">
           <button
             onClick={handleForgotPassword}
             className="text-primary-500 hover:text-primary-700 transition-colors"
           >
             {t("forgotPasswordButton") ?? ""}
           </button>
-          {inputsError && <div className="text-red-500">{inputsError}</div>}
+          <Link
+            href={routes.REGISTER}
+            className="text-primary-500 hover:text-primary-700 transition-colors"
+          >
+            {t("registerLink")}
+          </Link>
         </div>
       </Card>
     </div>

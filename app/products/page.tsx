@@ -38,7 +38,7 @@ const Products: FC = () => {
   const router = useRouter();
 
   const fetchItems = useCallback(async () => {
-    const fetchedItems = await getItems();
+    const { data: fetchedItems = [] } = await getItems();
     setLoading(false);
     setItems(fetchedItems);
     setLoadingItems(new Map());

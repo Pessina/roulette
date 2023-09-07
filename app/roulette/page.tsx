@@ -30,7 +30,7 @@ const Roulette = () => {
 
   useEffect(() => {
     const fetchItems = async () => {
-      const items = await getItems();
+      const { data: items = [] } = await getItems();
       setIsLoading(false);
       setItems(items);
       prizeNumber.current = weightedRandom(items);

@@ -8,7 +8,17 @@
     "loginButton": "Entrar",
     "forgotPasswordButton": "Esqueceu a senha?",
     "wrongCredentialsError": "Credenciais incorretas",
-    "fillEmailError": "Por favor, preencha seu e-mail"
+    "fillEmailError": "Por favor, preencha seu e-mail",
+    "registerLink": "Registrar-se"
+  },
+  "registerPage": {
+    "emailLabel": "E-mail",
+    "passwordLabel": "Senha",
+    "emailErrorMessage": "Endereço de e-mail inválido",
+    "emailRequiredMessage": "E-mail é obrigatório",
+    "passwordRequiredMessage": "Senha é obrigatória",
+    "registerButton": "Cadastrar",
+    "loginLink": "Voltar para o Login"
   },
   "roulettePage": {
     "spinButton": "Sortear",

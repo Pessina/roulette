@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiLogOut } from "react-icons/fi";
 
+import { routes } from "@/constants/routes";
+
 import { auth } from "../firebase";
 import Button from "./Button";
 
@@ -36,10 +38,18 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           <ul className="flex space-x-4">
             <li>
               <Link
-                href="/"
+                href={routes.ROULETTE}
                 className="text-xl hover:text-primary-500 transition-colors duration-200"
               >
                 {t("roulette")}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={routes.PRODUCTS}
+                className="text-xl hover:text-primary-500 transition-colors duration-200"
+              >
+                {t("products")}
               </Link>
             </li>
           </ul>
