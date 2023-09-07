@@ -1,24 +1,30 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaSpinner } from "react-icons/fa";
 
 import { getItems } from "@/api/item";
 import { Item } from "@/api/types";
-import Congratulations from "@/app/components/Congratulations";
+import Congratulations from "@/app/roulette/components/Congratulations";
 import Button from "@/components/Button";
 import { Loader } from "@/components/Loader";
-import Roulette from "@/components/Roulette";
+import { routes } from "@/constants/routes";
 import { weightedRandom } from "@/utils/weightedRandom";
 
-const Home = () => {
-  const { t } = useTranslation("", { keyPrefix: "homePage" });
+import { AuthContext } from "../../providers/AuthProvider";
+import RouletteWheel from "./components/RouletteWheel";
+
+const Roulette = () => {
+  const { t } = useTranslation("", { keyPrefix: "roulettePage" });
 
   const [mustStartSpinning, setMustStartSpinning] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
   let prizeNumber = useRef(0);
+  const { user, isLoadingUser } = useContext(AuthContext);
+  const router = useRouter();
 
   const canSpin = items.length > 0 && !mustStartSpinning;
 
@@ -59,6 +65,11 @@ const Home = () => {
     };
   }, [items, onSpin, mustStartSpinning, canSpin, isModalOpen]);
 
+  if (!isLoadingUser && !user) {
+    router.push(routes.LOGIN);
+    return null;
+  }
+
   return (
     <>
       <div className="h-full flex flex-col gap-10 items-center justify-center bg-background-500 p-4">
@@ -66,7 +77,7 @@ const Home = () => {
           <Loader />
         ) : (
           <>
-            <Roulette
+            <RouletteWheel
               prizeNumber={prizeNumber.current}
               data={items.map((item) => item.item)}
               mustStartSpinning={mustStartSpinning}
@@ -96,4 +107,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Roulette;

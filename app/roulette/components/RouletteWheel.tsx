@@ -1,17 +1,17 @@
 import dynamic from "next/dynamic";
 import React from "react";
 
-type RouletteI18N = {
+type RouletteComponentI18N = {
   noOptions: string;
 };
 
-type RouletteProps = {
+type RouletteComponentProps = {
   data: string[];
   mustStartSpinning: boolean;
   onSpinComplete: () => void;
   className?: string;
   prizeNumber: number;
-  i18n?: RouletteI18N;
+  i18n?: RouletteComponentI18N;
 };
 
 const Wheel = dynamic(
@@ -19,7 +19,7 @@ const Wheel = dynamic(
   { ssr: false }
 );
 
-const Roulette: React.FC<RouletteProps> = ({
+const RouletteComponent: React.FC<RouletteComponentProps> = ({
   data = [],
   mustStartSpinning,
   onSpinComplete,
@@ -64,7 +64,7 @@ const Roulette: React.FC<RouletteProps> = ({
         textDistance={60}
         disableInitialAnimation
         pointerProps={{
-          src: "/pointer-bright.png",
+          src: "/assets/images/pointer-bright.png",
           style: {
             zIndex: 7,
           },
@@ -76,4 +76,4 @@ const Roulette: React.FC<RouletteProps> = ({
   );
 };
 
-export default Roulette;
+export default RouletteComponent;

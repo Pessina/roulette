@@ -1,10 +1,10 @@
-import "./globals.css";
+import "../public/styles/globals.css";
 
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 
-import { AuthProvider } from "@/components/AuthProvider";
-import TranslationProvider from "@/components/TranslationProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
+import TranslationProvider from "@/providers/TranslationProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -10,7 +10,7 @@
     "wrongCredentialsError": "Credenciais incorretas",
     "fillEmailError": "Por favor, preencha seu e-mail"
   },
-  "homePage": {
+  "roulettePage": {
     "spinButton": "Sortear",
     "noOptions": "Ainda não foram adicionados prêmios"
   },
