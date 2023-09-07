@@ -2,16 +2,16 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 import { firestore, storage } from "../firebase";
-import { Result } from "./types";
+import { ProfileData, Result } from "./types";
 import { withUser } from "./user";
 
-export const getProfileData = async (): Promise<Result<any>> => {
-  return withUser(async (userId) => {
+export const getProfileData = async (): Promise<Result<ProfileData>> => {
+  return withUser<ProfileData>(async (userId) => {
     const docRef = doc(firestore, "users", userId);
     const docSnapshot = await getDoc(docRef);
 
     if (docSnapshot.exists()) {
-      return docSnapshot.data();
+      return docSnapshot.data() as ProfileData;
     } else {
       throw new Error("DOCUMENT_NOT_EXIST");
     }
@@ -19,7 +19,7 @@ export const getProfileData = async (): Promise<Result<any>> => {
 };
 
 export const updateProfileData = async (
-  profileData: any
+  profileData: Partial<ProfileData>
 ): Promise<Result<void>> => {
   return withUser(async (userId) => {
     const docRef = doc(firestore, "users", userId);
@@ -33,9 +33,7 @@ export const updateProfileData = async (
   });
 };
 
-export const uploadCompanyLogo = async (
-  file: File
-): Promise<Result<string>> => {
+export const uploadLogo = async (file: File): Promise<Result<string>> => {
   return withUser<string>(async (userId) => {
     const metadata = {
       contentType: file.type,
