@@ -1,7 +1,7 @@
 "use client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
@@ -10,8 +10,9 @@ import { getProfileData, updateProfileData, uploadLogo } from "@/api/profile";
 import { ProfileData } from "@/api/types";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
-import ImageInput from "@/components/ImageInput";
-import Input from "@/components/Input";
+import ColorPicker from "@/components/Forms/ColorPicker";
+import ImageInput from "@/components/Forms/ImageInput";
+import Input from "@/components/Forms/Input";
 import { routes } from "@/constants/routes";
 import { AuthContext } from "@/providers/AuthProvider";
 
@@ -19,7 +20,7 @@ import DeleteAccountModal from "./components/DeleteAccountModal";
 
 type ProfileForm = {
   companyName: string;
-  rouletteColors: string;
+  rouletteColors: { hex: string }[];
   fileInput?: File;
 };
 
@@ -32,17 +33,27 @@ const ProfilePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const schema = yup.object().shape({
-    companyName: yup.string().required(t("companyNameRequired")),
-    rouletteColors: yup.string().required(t("rouletteColorsRequired")),
-  });
+  const schema = useMemo(() => {
+    return yup.object().shape({
+      companyName: yup.string().required(t("companyNameRequired")),
+      rouletteColors: yup
+        .array()
+        .of(
+          yup.object({
+            hex: yup.string().required(),
+          })
+        )
+        .min(1)
+        .required(),
+    });
+  }, [t]);
 
   const {
-    reset,
     register,
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<ProfileForm>({
     resolver: yupResolver(schema),
   });
@@ -109,11 +120,16 @@ const ProfilePage: React.FC = () => {
             label={t("companyName")}
             error={errors.companyName?.message}
           />
-          <Input
-            {...register("rouletteColors")}
-            type="text"
-            label={t("rouletteColors")}
-            error={errors.rouletteColors?.message || error}
+          <Controller
+            control={control}
+            name="rouletteColors"
+            render={({ field }) => (
+              <ColorPicker
+                onChange={(colors) =>
+                  field.onChange(colors.map((c) => ({ hex: c })))
+                }
+              />
+            )}
           />
           <div className="flex gap-2 justify-between">
             <Button

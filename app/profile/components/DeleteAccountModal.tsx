@@ -8,7 +8,7 @@ import * as yup from "yup";
 
 import { deleteUserCascade } from "@/api/user";
 import Button from "@/components/Button";
-import Input from "@/components/Input";
+import Input from "@/components/Forms/Input";
 import Modal from "@/components/Modal";
 
 type DeleteAccountModalProps = {

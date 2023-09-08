@@ -7,7 +7,7 @@ import { FaSpinner } from "react-icons/fa";
 import * as yup from "yup";
 
 import { Item } from "@/api/types";
-import Input from "@/components/Input";
+import Input from "@/components/Forms/Input";
 
 import { CardListItem } from "../../../components/CardListItem";
 

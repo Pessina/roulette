@@ -9,8 +9,8 @@ export interface Result<T> {
   error?: string;
 }
 
-export interface ProfileData {
+export type ProfileData = {
   companyName: string;
-  rouletteColors: string;
-  logo?: string;
-}
+  logo: string;
+  rouletteColors: { hex: string }[];
+};

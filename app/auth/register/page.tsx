@@ -15,7 +15,7 @@ import * as yup from "yup";
 
 import Button from "@/components/Button";
 import Card from "@/components/Card";
-import Input from "@/components/Input";
+import Input from "@/components/Forms/Input";
 import { routes } from "@/constants/routes";
 
 import { auth } from "../../../firebase";

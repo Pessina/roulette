@@ -1,6 +1,8 @@
 "use client";
 import React, { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 
+import FieldWrapper from "./FieldWrapper";
+
 type InputProps = {
   theme?: "border" | "underline" | "none";
   label?: string;
@@ -40,8 +42,7 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   }
 
   return (
-    <div>
-      {label && <label className="block mb-2 text-text-100">{label}</label>}
+    <FieldWrapper label={label} error={error}>
       <input
         ref={ref}
         {...rest}
@@ -52,8 +53,7 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
           theme !== "none" ? "px-4 py-2 rounded-lg" : ""
         } ${borderClass} ${focusClass} ${bgClass}`}
       />
-      {error && <div className="text-error-500 text-sm mt-1">{error}</div>}
-    </div>
+    </FieldWrapper>
   );
 };
 
