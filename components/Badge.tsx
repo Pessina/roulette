@@ -5,6 +5,7 @@ type BadgeProps = {
   styleType?: "primary" | "secondary" | "info" | "warning" | "danger";
   style?: React.CSSProperties;
   onClick?: (event: React.MouseEvent) => void;
+  className?: string;
 };
 
 const Badge: React.FC<BadgeProps> = ({
@@ -12,6 +13,7 @@ const Badge: React.FC<BadgeProps> = ({
   styleType = "primary",
   style,
   onClick,
+  className = "",
 }) => {
   let additionalStyles = "";
 
@@ -36,7 +38,7 @@ const Badge: React.FC<BadgeProps> = ({
   return (
     <span
       style={style}
-      className={`text-xs font-semibold rounded-full py-1 px-3 mx-1 cursor-pointer ${additionalStyles}`}
+      className={`${className} text-xs font-semibold rounded-full py-1 px-3 mx-1 cursor-pointer ${additionalStyles}`}
       onClick={onClick}
     >
       {children}

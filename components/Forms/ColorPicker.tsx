@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaPalette } from "react-icons/fa";
+import { FaPalette, FaTimes } from "react-icons/fa";
 
 import Badge from "../Badge";
+import Button from "../Button";
 import FieldWrapper from "./FieldWrapper";
+import Input from "./Input";
 
 type ColorPickerProps = {
   onChange: (colors: string[]) => void;
@@ -16,8 +18,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   error,
 }) => {
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [currentColor, setCurrentColor] = useState<string>("#ffffff");
-
+  const [currentColor, setCurrentColor] = useState<string | undefined>(
+    undefined
+  );
   const colorInputRef = useRef<HTMLInputElement>(null);
 
   const handleClickPalette = () => {
@@ -25,12 +28,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       colorInputRef.current.click();
     }
   };
-
-  const borderClass = error
-    ? "border border-error-500"
-    : "border border-primary-500";
-  const focusClass = "focus:border-primary-700";
-  const bgClass = "bg-background-700";
 
   useEffect(() => {
     onChange(selectedColors);
@@ -42,44 +39,51 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 
   const addColor = () => {
     if (currentColor) {
-      setSelectedColors([...selectedColors, currentColor]);
+      setSelectedColors([currentColor, ...selectedColors]);
+      setCurrentColor(undefined);
     }
   };
 
   return (
     <FieldWrapper label={label} error={error} className="relative">
-      <div className="relative w-full min-h-[2.5rem] flex items-center">
-        <input
+      <div className="w-full flex items-center gap-2">
+        <Input
           type="text"
-          className={`block w-full text-text-100 focus:outline-none active:ring-0 active:shadow-none focus:shadow-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 px-4 py-2 rounded-lg ${borderClass} ${focusClass} ${bgClass}`}
           placeholder="Enter HEX color"
           value={currentColor}
+          style={{ backgroundColor: currentColor }}
           onChange={(e) => setCurrentColor(e.target.value)}
-          onBlur={addColor}
         />
-        <button className="ml-2" onClick={handleClickPalette}>
+        <button
+          className="p-2 rounded hover:bg-gray-200"
+          onClick={handleClickPalette}
+        >
           <FaPalette />
         </button>
-        {selectedColors.map((color, index) => (
-          <Badge
-            key={index}
-            style={{ backgroundColor: color }}
-            onClick={() => removeColor(color)}
-          >
-            {color}
-          </Badge>
-        ))}
-      </div>
-      <div className="absolute top-0 left-0 mt-2">
         <input
           ref={colorInputRef}
           className="hidden"
           type="color"
           value={currentColor}
           onChange={(e) => setCurrentColor(e.target.value)}
-          onBlur={addColor}
         />
+        <Button theme="secondary" onClick={addColor}>
+          Add Color
+        </Button>
       </div>
+      <ul className="flex gap-2 mt-4">
+        {selectedColors.map((color, index) => (
+          <Badge
+            key={index}
+            style={{ backgroundColor: color }}
+            className="flex gap-1 items-center"
+            onClick={() => removeColor(color)}
+          >
+            <FaTimes onClick={() => removeColor(color)} />
+            <p>{color}</p>
+          </Badge>
+        ))}
+      </ul>
     </FieldWrapper>
   );
 };

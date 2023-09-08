@@ -125,6 +125,7 @@ const ProfilePage: React.FC = () => {
             name="rouletteColors"
             render={({ field }) => (
               <ColorPicker
+                label={t("rouletteColors")}
                 onChange={(colors) =>
                   field.onChange(colors.map((c) => ({ hex: c })))
                 }
