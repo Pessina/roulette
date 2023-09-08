@@ -44,8 +44,8 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   return (
     <FieldWrapper label={label} error={error}>
       <input
-        ref={ref}
         {...rest}
+        ref={ref}
         className={`block w-full text-text-100
         focus:outline-none active:ring-0 active:shadow-none focus:shadow-none focus:ring-0 focus-visible:outline-none
         focus-visible:ring-0

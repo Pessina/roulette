@@ -10,12 +10,12 @@ import { getProfileData, updateProfileData, uploadLogo } from "@/api/profile";
 import { ProfileData } from "@/api/types";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
-import ColorPicker from "@/components/Forms/ColorPicker";
 import ImageInput from "@/components/Forms/ImageInput";
 import Input from "@/components/Forms/Input";
 import { routes } from "@/constants/routes";
 import { AuthContext } from "@/providers/AuthProvider";
 
+import { ColorsInput } from "./components/ColorsInput";
 import DeleteAccountModal from "./components/DeleteAccountModal";
 
 type ProfileForm = {
@@ -121,8 +121,8 @@ const ProfilePage: React.FC = () => {
           <Controller
             control={control}
             name="rouletteColors"
-            render={({ field }) => (
-              <ColorPicker {...field} label={t("rouletteColors")} />
+            render={({ field: { ref, ...field } }) => (
+              <ColorsInput label={t("rouletteColors")} {...field} />
             )}
           />
           <div className="flex gap-2 justify-between">
