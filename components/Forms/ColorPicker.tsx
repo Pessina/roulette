@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { FaPalette, FaTimes } from "react-icons/fa";
 import * as yup from "yup";
@@ -17,12 +17,14 @@ type ColorPickerProps = {
   onChange: (colors: string[]) => void;
   label?: string;
   error?: string;
+  value?: string[];
 };
 
 const ColorPicker: React.FC<ColorPickerProps> = ({
   onChange,
   label,
   error,
+  value = [],
 }) => {
   const schema = yup.object().shape({
     color: yup
@@ -33,7 +35,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 
   const {
     handleSubmit,
-    reset,
     register,
     setValue,
     watch,
@@ -42,7 +43,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     mode: "onSubmit",
     resolver: yupResolver(schema),
   });
-  const [selectedColors, setSelectedColors] = React.useState<string[]>([]);
+
   const colorInputRef = useRef<HTMLInputElement>(null);
 
   const handleClickPalette = () => {
@@ -51,17 +52,13 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }
   };
 
-  useEffect(() => {
-    onChange(selectedColors);
-  }, [selectedColors, onChange]);
-
   const onSubmit = (data: ColorPickerData) => {
-    setSelectedColors([data.color, ...selectedColors]);
-    reset();
+    onChange([data.color, ...value]);
+    setValue("color", "");
   };
 
   const removeColor = (color: string) => {
-    setSelectedColors(selectedColors.filter((c) => c !== color));
+    onChange(value.filter((c) => c !== color));
   };
 
   const currentColor = watch("color");
@@ -95,7 +92,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         </div>
       </FieldWrapper>
       <ul className="flex gap-2 mt-4">
-        {selectedColors.map((color, index) => (
+        {value.map((color, index) => (
           <Badge
             key={index}
             style={{ backgroundColor: color }}

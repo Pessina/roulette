@@ -20,7 +20,7 @@ import DeleteAccountModal from "./components/DeleteAccountModal";
 
 type ProfileForm = {
   companyName: string;
-  rouletteColors: { hex: string }[];
+  rouletteColors: string[];
   fileInput?: File;
 };
 
@@ -36,15 +36,7 @@ const ProfilePage: React.FC = () => {
   const schema = useMemo(() => {
     return yup.object().shape({
       companyName: yup.string().required(t("companyNameRequired")),
-      rouletteColors: yup
-        .array()
-        .of(
-          yup.object({
-            hex: yup.string().required(),
-          })
-        )
-        .min(1)
-        .required(),
+      rouletteColors: yup.array().of(yup.string().required()).min(1).required(),
     });
   }, [t]);
 
@@ -130,12 +122,7 @@ const ProfilePage: React.FC = () => {
             control={control}
             name="rouletteColors"
             render={({ field }) => (
-              <ColorPicker
-                label={t("rouletteColors")}
-                onChange={(colors) =>
-                  field.onChange(colors.map((c) => ({ hex: c })))
-                }
-              />
+              <ColorPicker {...field} label={t("rouletteColors")} />
             )}
           />
           <div className="flex gap-2 justify-between">

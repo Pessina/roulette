@@ -12,5 +12,5 @@ export interface Result<T> {
 export type ProfileData = {
   companyName: string;
   logo: string;
-  rouletteColors: { hex: string }[];
+  rouletteColors: string[];
 };
