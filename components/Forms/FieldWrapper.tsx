@@ -7,14 +7,16 @@ type FieldWrapperProps = {
   label?: string;
   error?: string;
   children: React.ReactNode;
+  className?: string;
 };
 
 const FieldWrapper: React.FC<FieldWrapperProps> = ({
   label,
   error,
   children,
+  className = "",
 }) => (
-  <div>
+  <div className={className}>
     {label && <Label text={label} />}
     {children}
     {error && <FieldError message={error} />}
