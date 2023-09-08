@@ -1,5 +1,7 @@
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { getProfileData } from "@/api/profile";
 
 type RouletteComponentI18N = {
   noOptions: string;
@@ -27,7 +29,13 @@ const RouletteComponent: React.FC<RouletteComponentProps> = ({
   prizeNumber,
   i18n,
 }) => {
-  const colorPalette = ["#f6157c", "#0953fa", "#bd124f", "#063bbf", "#121212"];
+  const [colorPalette, setColorPalette] = useState([
+    "#f6157c",
+    "#0953fa",
+    "#bd124f",
+    "#063bbf",
+    "#121212",
+  ]);
   const backgroundColors = data.map(
     (_, index) => colorPalette[index % colorPalette.length]
   );
@@ -40,6 +48,16 @@ const RouletteComponent: React.FC<RouletteComponentProps> = ({
       textColor: textColors[index],
     },
   }));
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      const result = await getProfileData();
+      if (result.data) {
+        setColorPalette(result.data.rouletteColors);
+      }
+    };
+    fetchProfileData();
+  }, []);
 
   return options.length > 0 ? (
     <div

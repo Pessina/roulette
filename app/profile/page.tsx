@@ -122,7 +122,11 @@ const ProfilePage: React.FC = () => {
             control={control}
             name="rouletteColors"
             render={({ field: { ref, ...field } }) => (
-              <ColorsInput label={t("rouletteColors")} {...field} />
+              <ColorsInput
+                label={t("rouletteColors")}
+                {...field}
+                error={error || errors.rouletteColors?.message}
+              />
             )}
           />
           <div className="flex gap-2 justify-between">
