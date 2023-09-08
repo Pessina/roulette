@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
@@ -18,7 +18,7 @@ import Button from "@/components/Button";
 import Card from "@/components/Card";
 import Input from "@/components/Forms/Input";
 import { routes } from "@/constants/routes";
-import { AuthContext } from "@/providers/AuthProvider";
+import { useAuth } from "@/hooks/use-auth";
 
 import { auth } from "../../../firebase";
 
@@ -30,7 +30,8 @@ type LoginForm = {
 const LoginPage: React.FC = () => {
   const { t } = useTranslation("", { keyPrefix: "loginPage" });
   const router = useRouter();
-  const { user, isLoadingUser } = useContext(AuthContext);
+
+  useAuth();
 
   const schema = yup.object().shape({
     email: yup
@@ -58,7 +59,7 @@ const LoginPage: React.FC = () => {
       await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, data.email, data.password);
       setInputsError("");
-      router.push("/");
+      router.push(routes.ROULETTE);
     } catch (error) {
       setInputsError(t("wrongCredentialsError") ?? "");
     } finally {
@@ -82,11 +83,6 @@ const LoginPage: React.FC = () => {
       setInputsError(t("fillEmailError") ?? "");
     }
   };
-
-  if (!isLoadingUser && user) {
-    router.push(routes.ROULETTE);
-    return null;
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background-900">

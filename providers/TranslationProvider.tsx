@@ -10,7 +10,7 @@ type TranslationProviderProps = {
 const TranslationProvider: React.FC<TranslationProviderProps> = ({
   children,
 }) => {
-  return <>{children}</>;
+  return children;
 };
 
 export default TranslationProvider;

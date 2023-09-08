@@ -1,6 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
-import React, { FC, useCallback, useContext, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 
 import { addItem, getItems, removeItem, updateItem } from "@/api/item";
@@ -11,9 +10,7 @@ import {
 } from "@/app/products/components/EditableListItem";
 import { ListItem } from "@/app/products/components/ListItem";
 import { Loader } from "@/components/Loader";
-import { routes } from "@/constants/routes";
-
-import { AuthContext } from "../../providers/AuthProvider";
+import { useAuth } from "@/hooks/use-auth";
 
 const createNewItem = (data: FormInputs) => ({
   id: uuid(),
@@ -34,9 +31,8 @@ const Products: FC = () => {
   const [loadingItems, setLoadingItems] = useState<Map<string, boolean>>(
     new Map()
   );
-  const { user, isLoadingUser } = useContext(AuthContext);
-  const router = useRouter();
 
+  useAuth();
   const fetchItems = useCallback(async () => {
     const { data: fetchedItems = [] } = await getItems();
     setLoading(false);
@@ -87,11 +83,6 @@ const Products: FC = () => {
     },
     [fetchItems, handleLoadingStatus]
   );
-
-  if (!isLoadingUser && !user) {
-    router.push(routes.LOGIN);
-    return null;
-  }
 
   return (
     <main className="p-4 h-full bg-background-900 min-h-screen">

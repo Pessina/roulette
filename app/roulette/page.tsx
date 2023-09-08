@@ -1,6 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaSpinner } from "react-icons/fa";
 
@@ -9,10 +8,9 @@ import { Item } from "@/api/types";
 import Congratulations from "@/app/roulette/components/Congratulations";
 import Button from "@/components/Button";
 import { Loader } from "@/components/Loader";
-import { routes } from "@/constants/routes";
+import { useAuth } from "@/hooks/use-auth";
 import { weightedRandom } from "@/utils/weightedRandom";
 
-import { AuthContext } from "../../providers/AuthProvider";
 import RouletteWheel from "./components/RouletteWheel";
 
 const Roulette = () => {
@@ -23,11 +21,9 @@ const Roulette = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
   let prizeNumber = useRef(0);
-  const { user, isLoadingUser } = useContext(AuthContext);
-  const router = useRouter();
-
   const canSpin = items.length > 0 && !mustStartSpinning;
 
+  useAuth();
   useEffect(() => {
     const fetchItems = async () => {
       const { data: items = [] } = await getItems();
@@ -64,11 +60,6 @@ const Roulette = () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [items, onSpin, mustStartSpinning, canSpin, isModalOpen]);
-
-  if (!isLoadingUser && !user) {
-    router.push(routes.LOGIN);
-    return null;
-  }
 
   return (
     <>

@@ -1,6 +1,6 @@
 "use client";
 import { onAuthStateChanged } from "firebase/auth";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 
 import Header from "../components/Header";
@@ -22,7 +22,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

@@ -1,7 +1,6 @@
 "use client";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
@@ -12,8 +11,7 @@ import Button from "@/components/Button";
 import Card from "@/components/Card";
 import ImageInput from "@/components/Forms/ImageInput";
 import Input from "@/components/Forms/Input";
-import { routes } from "@/constants/routes";
-import { AuthContext } from "@/providers/AuthProvider";
+import { useAuth } from "@/hooks/use-auth";
 
 import { ColorsInput } from "./components/ColorsInput";
 import DeleteAccountModal from "./components/DeleteAccountModal";
@@ -26,13 +24,12 @@ type ProfileForm = {
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation("", { keyPrefix: "profilePage" });
-  const { user, isLoadingUser } = useContext(AuthContext);
-  const router = useRouter();
   const [logoUrl, setLogoUrl] = useState<string | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
+  useAuth();
   const schema = useMemo(() => {
     return yup.object().shape({
       companyName: yup.string().required(t("companyNameRequired")),
@@ -84,11 +81,6 @@ const ProfilePage: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  if (!isLoadingUser && !user) {
-    router.push(routes.LOGIN);
-    return undefined;
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background-900">
