@@ -1,7 +1,6 @@
 import "../public/styles/globals.css";
 
 import { Inter } from "next/font/google";
-import Head from "next/head";
 import { ReactNode } from "react";
 
 import { AuthProvider } from "@/providers/AuthProvider";
@@ -17,9 +16,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="h-full">
-      <Head>
+      <head>
         <link rel="icon" href="/assets/images/favicon.ico" />
-      </Head>
+      </head>
       <body className={`${inter.className} h-full flex flex-col`}>
         <AuthProvider>
           <TranslationProvider>

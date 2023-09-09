@@ -13,7 +13,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
   onChange,
   previewUrl,
 }) => {
-  const [preview, setPreview] = useState<string | undefined>(undefined);
+  const [preview, setPreview] = useState<string>("");
 
   useEffect(() => {
     if (previewUrl) {
@@ -31,14 +31,14 @@ const ImageInput: React.FC<ImageInputProps> = ({
       };
       reader.readAsDataURL(file);
     } else {
-      setPreview(undefined);
+      setPreview("");
     }
 
     onChange(file);
   };
 
   const removeImage = () => {
-    setPreview(undefined);
+    setPreview("");
     onChange(undefined);
   };
 

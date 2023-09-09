@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FaSpinner } from "react-icons/fa";
 
 import { getItems } from "@/api/item";
+import { getProfileData } from "@/api/profile";
 import { Item } from "@/api/types";
 import Congratulations from "@/app/roulette/components/Congratulations";
 import Button from "@/components/Button";
@@ -20,19 +21,22 @@ const Roulette = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<Item[]>([]);
+  const [rouletteColors, setRouletteColors] = useState<string[]>([]);
   let prizeNumber = useRef(0);
   const canSpin = items.length > 0 && !mustStartSpinning;
 
   useAuth();
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchData = async () => {
       const { data: items = [] } = await getItems();
-      setIsLoading(false);
+      const { data: profileData } = await getProfileData();
+      profileData && setRouletteColors(profileData.rouletteColors);
       setItems(items);
+      setIsLoading(false);
       prizeNumber.current = weightedRandom(items);
     };
 
-    fetchItems();
+    fetchData();
   }, []);
 
   const onSpin = useCallback(() => {
@@ -74,6 +78,7 @@ const Roulette = () => {
               mustStartSpinning={mustStartSpinning}
               onSpinComplete={onSpinComplete}
               i18n={{ noOptions: t("noOptions") }}
+              colorPalette={rouletteColors}
             />
             <Button
               size="large"

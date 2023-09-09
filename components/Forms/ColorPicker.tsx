@@ -43,7 +43,8 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         }}
       />
       <Input
-        value={currentColor}
+        defaultValue={currentColor}
+        readOnly
         type="text"
         placeholder={placeholder}
         style={{ backgroundColor: currentColor }}

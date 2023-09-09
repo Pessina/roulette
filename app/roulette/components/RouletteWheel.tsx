@@ -1,7 +1,5 @@
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
-
-import { getProfileData } from "@/api/profile";
+import React from "react";
 
 type RouletteComponentI18N = {
   noOptions: string;
@@ -14,12 +12,21 @@ type RouletteComponentProps = {
   className?: string;
   prizeNumber: number;
   i18n?: RouletteComponentI18N;
+  colorPalette?: string[];
 };
 
 const Wheel = dynamic(
   () => import("react-custom-roulette").then((mod) => mod.Wheel),
   { ssr: false }
 );
+
+const defaultColorPalette = [
+  "#f6157c",
+  "#0953fa",
+  "#bd124f",
+  "#063bbf",
+  "#121212",
+];
 
 const RouletteComponent: React.FC<RouletteComponentProps> = ({
   data = [],
@@ -28,16 +35,11 @@ const RouletteComponent: React.FC<RouletteComponentProps> = ({
   className,
   prizeNumber,
   i18n,
+  colorPalette,
 }) => {
-  const [colorPalette, setColorPalette] = useState([
-    "#f6157c",
-    "#0953fa",
-    "#bd124f",
-    "#063bbf",
-    "#121212",
-  ]);
+  const finalColorPalette = colorPalette ?? defaultColorPalette;
   const backgroundColors = data.map(
-    (_, index) => colorPalette[index % colorPalette.length]
+    (_, index) => finalColorPalette[index % finalColorPalette.length]
   );
   const textColors = data.map(() => "#f2f2f2");
 
@@ -48,16 +50,6 @@ const RouletteComponent: React.FC<RouletteComponentProps> = ({
       textColor: textColors[index],
     },
   }));
-
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      const result = await getProfileData();
-      if (result.data) {
-        setColorPalette(result.data.rouletteColors);
-      }
-    };
-    fetchProfileData();
-  }, []);
 
   return options.length > 0 ? (
     <div
