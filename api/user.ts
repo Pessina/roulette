@@ -8,6 +8,7 @@ import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 
 import { auth, firestore } from "@/firebase";
 
+import { deleteFolder } from "./file";
 import { Result } from "./types";
 
 export const getUserId = (): string => {
@@ -46,6 +47,9 @@ export const deleteUserDataFromFirestore = async (
     );
 
     await Promise.all(batchDeletes);
+    await deleteDoc(doc(firestore, "users", userId));
+    await deleteFolder(`users/${userId}`);
+
     return { data: undefined };
   } catch (error: unknown) {
     if (error instanceof Error) {

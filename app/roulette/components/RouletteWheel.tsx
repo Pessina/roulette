@@ -35,9 +35,10 @@ const RouletteComponent: React.FC<RouletteComponentProps> = ({
   className,
   prizeNumber,
   i18n,
-  colorPalette,
+  colorPalette = [],
 }) => {
-  const finalColorPalette = colorPalette ?? defaultColorPalette;
+  const finalColorPalette =
+    colorPalette?.length > 0 ? colorPalette : defaultColorPalette;
   const backgroundColors = data.map(
     (_, index) => finalColorPalette[index % finalColorPalette.length]
   );

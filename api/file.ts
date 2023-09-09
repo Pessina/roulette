@@ -1,4 +1,10 @@
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 import { storage } from "@/firebase";
 
@@ -51,4 +57,20 @@ export const uploadFile = async (
       }
     );
   });
+};
+
+export const deleteFolder = async (folderPath: string): Promise<void> => {
+  const folderRef = ref(storage, folderPath);
+
+  const res = await listAll(folderRef);
+
+  const fileDeletePromises = res.items.map((fileRef) => {
+    return deleteObject(fileRef);
+  });
+
+  const folderDeletePromises = res.prefixes.map((subFolderRef) => {
+    return deleteFolder(subFolderRef.fullPath);
+  });
+
+  await Promise.all([...fileDeletePromises, ...folderDeletePromises]);
 };
